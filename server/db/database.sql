@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS comanda (
+    id SERIAL,
+    nome VARCHAR NOT NULL,
+    data_hora TIMESTAMP NOT NULL,
+    CONSTRAINT pk_id PRIMARY KEY (id)
+)

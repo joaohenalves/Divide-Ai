@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS divide_ai_db;
+CREATE DATABASE divide_ai_db;
 
 \c divide_ai_db
 
@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS comanda (
     nome_dono VARCHAR NOT NULL,
     data_hora TIMESTAMP NOT NULL,
     CONSTRAINT pk_id PRIMARY KEY (id)
-)
+);

@@ -5,7 +5,7 @@ module.exports = {
     dbConfig: {
       user: 'postgres',
       host: 'localhost',
-      database: 'my_app_pgp',
+      database: 'divide_ai_db',
       password: 'postgres',
       port: 5432,
     },

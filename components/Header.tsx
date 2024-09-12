@@ -21,7 +21,7 @@ export function Header() {
   return (
     <View style={estilo}> 
         <Ionicons name="reorder-three" size={40} color={Colors.light.text}/>
-        <Text style={{ color: Colors.light.text, fontSize: 24, fontFamily: 'MuseoModernoRegular' }}>Bem Vindo, Luiz</Text>
+        <Text style={{ color: Colors.light.text, fontSize: 24, fontFamily: 'MuseoModernoRegular' }}>Bem Vindo, [User]</Text>
         <Ionicons name="information-circle-outline" size={40} color={Colors.light.icon} />
     </View>
   );

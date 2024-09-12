@@ -1,14 +1,10 @@
 import { Colors } from "../constants/Colors";
 import { Text, View } from "react-native";
-import * as Font from 'expo-font';
 import { ComandaBox } from "@/components/ComandaBox";
 import { Header } from "@/components/Header";
 
 export default function Index() {
 
-  const [fontsLoaded] = Font.useFonts({
-    MuseoModernoRegular: require('../assets/fonts/MuseoModerno-Regular.ttf'),
-  });
 
   return (
     <View

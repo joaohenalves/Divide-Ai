@@ -20,7 +20,7 @@ export default function TabLayout() {
           headerShown: false,
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
         }}
       />
@@ -28,9 +28,9 @@ export default function TabLayout() {
         name="novaComanda"
         options={{
           headerShown: false,
-          title: 'Nova Coamnda',
+          title: 'Nova Comanda',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'receipt' : 'receipt-outline'} color={color} />
           ),
         }}
       />

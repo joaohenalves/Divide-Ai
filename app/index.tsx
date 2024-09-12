@@ -1,6 +1,8 @@
 import { Colors } from "../constants/Colors";
 import { Text, View } from "react-native";
 import * as Font from 'expo-font';
+import { ComandaBox } from "@/components/ComandaBox";
+import { Header } from "@/components/Header";
 
 export default function Index() {
 
@@ -17,7 +19,8 @@ export default function Index() {
         backgroundColor: Colors.light.background,
       }}
     >
-      <Text style={{ color: Colors.light.text, fontWeight: 'bold', fontFamily: 'MuseoModernoRegular' }}>Hello, World!</Text>
+      <Header />
+      <ComandaBox />
     </View>
   );
 }

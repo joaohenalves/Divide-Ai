@@ -10,4 +10,8 @@ module.exports = {
       port: 5432,
     },
     jwtSecret: 'mysecretkey',
+
+    currentUser: {
+      name: 'none'
+    }
   };

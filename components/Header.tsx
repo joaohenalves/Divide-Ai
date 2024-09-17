@@ -17,11 +17,11 @@ const estilo: ViewStyle = {
     backgroundColor: "transparent",
 };
 
-export function Header() {
+export function Header( props : any) {
   return (
     <View style={estilo}> 
         <Ionicons name="reorder-three" size={40} color={Colors.light.text}/>
-        <Text style={{ color: Colors.light.text, fontSize: 24, fontFamily: 'MuseoModernoRegular' }}>Bem Vindo, [User]</Text>
+        <Text style={{ color: Colors.light.text, fontSize: 24, fontFamily: 'MuseoModernoRegular' }}>Bem Vindo, {props.user}</Text>
         <Ionicons name="information-circle-outline" size={40} color={Colors.light.icon} />
     </View>
   );

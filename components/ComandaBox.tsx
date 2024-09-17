@@ -1,5 +1,6 @@
 import { Colors } from '../constants/Colors';
 import { View, ViewStyle, Text } from 'react-native';
+import { Comanda } from './Comanda';
 
 const estilo: ViewStyle = {
     flexDirection: "column",
@@ -16,18 +17,29 @@ const estilo: ViewStyle = {
     padding: 40
 };
 
-const comandas = []
+
+const comandas = require('@/comandas.json');
+console.log(comandas);
+
+// const comandas = [];
 
 export function ComandaBox() {
+
+
   return (
     <View style={estilo}> 
-        {comandas.length === 0 && (
+        {comandas.length === 0 ? (
             
             <View style={{flexDirection:'column', alignItems:'center'}}>
               <Text style={{ color: Colors.light.faintText , fontFamily: 'MuseoModernoRegular' }}>Não há comandas por aqui</Text>
               <View style={{height: 1, width: '170%', backgroundColor: '#F3F3F3', marginTop: 10}}></View>
             </View>
-        )}
+
+        ) : comandas.map((comanda: any) => (
+              <Comanda key={comanda.id} comanda={comanda} />
+            )
+        )
+      }
     </View>
   );
 }

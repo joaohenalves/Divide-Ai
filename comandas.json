@@ -1,0 +1,22 @@
+[
+    {
+        "id":1,
+        "proprietario" : "Luiz",
+        "dtCriacao" : "2019-01-01"
+    },
+    {
+        "id":2,
+        "proprietario" : "Carlos",
+        "dtCriacao" : "2019-01-01"
+    },
+    {
+        "id":3,
+        "proprietario" : "João",
+        "dtCriacao" : "2019-01-01"
+    },
+    {
+        "id":4,
+        "proprietario" : "Marco",
+        "dtCriacao" : "2019-01-01"
+    }
+]

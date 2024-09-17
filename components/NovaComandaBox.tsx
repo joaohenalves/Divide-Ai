@@ -1,6 +1,7 @@
 import { Colors } from '../constants/Colors';
 import { View, ViewStyle, Text, TextInput } from 'react-native';
 import React, { useState } from 'react';
+import { currentUser } from '@/config';
 
 const estilo: ViewStyle = {
     flexDirection: "column",
@@ -23,12 +24,12 @@ export function NovaComandaBox() {
   const [text, setText] = useState('');
 
   return (
-    <View style={estilo}> {/* Caixa Branca */}
+    <View style={estilo}> 
 
             <View style={{flexDirection:'column', width: "100%"}}>
               <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoSemiBold', fontSize: 32, alignSelf: "center", marginBottom: 20 }}>Criar nova comanda</Text>
               <Text style={{ color: Colors.light.faintText , fontFamily: 'MuseoModernoRegular', fontSize: 20 , alignSelf: "flex-end"}}>Proprietário:</Text>
-              <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoRegular', fontSize: 28 , alignSelf: "flex-end", marginTop: -10}}>[User]</Text>          
+              <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoRegular', fontSize: 28 , alignSelf: "flex-end", marginTop: -10}}>{currentUser.name}</Text>          
             </View>
 
             <View style={{height: 1, width: '170%', backgroundColor: '#F3F3F3', margin:10}}></View>
@@ -40,6 +41,7 @@ export function NovaComandaBox() {
               <TextInput
                     style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 15, backgroundColor: Colors.light.background}}
                     placeholder="Escreva aqui"
+                    placeholderTextColor={Colors.light.faintText}
                     onChangeText={(value) => setText(value)}
                     value={text}
                />          

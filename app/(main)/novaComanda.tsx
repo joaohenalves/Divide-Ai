@@ -1,5 +1,5 @@
 import { Text, View, ViewStyle } from "react-native";
-import { Colors } from "../constants/Colors";
+import { Colors } from "../../constants/Colors";
 import { NovaComandaBox } from "@/components/NovaComandaBox";
 import { Ionicons } from "@expo/vector-icons";
 

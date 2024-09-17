@@ -1,11 +1,11 @@
 const express = require('express');
-const userRoutes = require('./routes/userRoutes');
-const config = require('../config');
+// const userRoutes = require('./routes/userRoutes');
+// const config = require('../config');
 const cors = require('cors');
 const pgp = require("pg-promise")({});
 const database = "divide_ai_db";
 const username = "postgres";
-const password = "joaohenalves"
+const password = "joaohenalves";
 const db = pgp(`postgres://${username}:${password}@localhost:5432/${database}`);
 const app = express();
 // Middleware para parsing JSON
@@ -14,11 +14,15 @@ app.use(express.json());
 app.use(cors());
 
 // Rotas
-app.use('/', userRoutes);
+// app.use('/', userRoutes);
 
 // Inicia o servidor
-app.listen(config.port, () => {
-    console.log(`Server running on port ${config.port}`);
+// app.listen(config.port, () => {
+//     console.log(`Server running on port ${config.port}`);
+// });
+
+app.listen(3001, () => {
+    console.log(`Server running on port ${3001}`);
 });
 
 app.post("/cadastrocomanda", async (req, res) => {
@@ -29,7 +33,7 @@ app.post("/cadastrocomanda", async (req, res) => {
             "INSERT INTO comanda (nome_dono, data_hora, status_comanda) VALUES ($1, CURRENT_TIMESTAMP, 1);",
             [data.nome]
         );
-        res.sendStatus(200);
+        res.sendStatus(201);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
@@ -44,7 +48,7 @@ app.delete("/apagarcomanda", async (req, res) => {
             "DELETE FROM comanda WHERE id = $1;",
             [data]
         );
-        res.sendStatus(200);
+        res.sendStatus(204);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
@@ -68,6 +72,7 @@ app.put("/alterarcomanda", async (req, res) => {
             `UPDATE comanda SET ${campos} WHERE id = $1`,
             [data.id, data.nome, data.status]
         );
+        res.sendStatus(201);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);

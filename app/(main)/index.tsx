@@ -1,8 +1,9 @@
 import { Colors } from "../../constants/Colors";
 import * as config from "@/config";
-import { View } from "react-native";
 import { ComandaBox } from "@/components/ComandaBox";
 import { Header } from "@/components/Header";
+import React from "react";
+import { View} from "react-native";
 
 export default function Index() {
 

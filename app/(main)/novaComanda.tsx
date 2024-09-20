@@ -2,6 +2,8 @@ import { Text, View, ViewStyle } from "react-native";
 import { Colors } from "../../constants/Colors";
 import { NovaComandaBox } from "@/components/NovaComandaBox";
 import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 const estilo_header: ViewStyle = {
   flexDirection: "row",
@@ -19,22 +21,26 @@ const estilo_header: ViewStyle = {
 };
 
 export default function Index() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: Colors.light.contrast_backgroud,
-      }}
-    >
-      <View style={estilo_header}> 
-        <Ionicons name="receipt" size={120} color={"white"}/>
-        <Text style={{ color: "white", fontSize: 100, fontFamily: 'MuseoModernoSemiBold', marginLeft:20 }}>+</Text>
-      </View>
 
-      <NovaComandaBox />
-      
-    </View>
+  const colorScheme = useColorScheme();
+
+  return (
+    
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: Colors.light.contrast_backgroud,
+        }}
+      >
+        <View style={estilo_header}> 
+          <Ionicons name="receipt" size={120} color={"white"}/>
+          <Text style={{ color: "white", fontSize: 100, fontFamily: 'MuseoModernoSemiBold', marginLeft:20 }}>+</Text>
+        </View>
+
+        <NovaComandaBox />
+        
+      </View>
   );
 }

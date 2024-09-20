@@ -9,15 +9,13 @@ const estilo: ViewStyle = {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    position: 'absolute',
-    top: 0,
+    position: 'relative',
 
-    height: '15%',
     width: '100%',
 
-    padding: 25,
-
-    backgroundColor: "transparent",
+    paddingVertical: 12, //ALtura do header
+    paddingHorizontal: 20,
+    backgroundColor: Colors.light.background,
 };
 
 const modalEstilo: ViewStyle = {
@@ -35,9 +33,10 @@ const modalEstilo: ViewStyle = {
 
 export function Header( props : any) {
 
-  const [modalVisible, setModalVisible] = React.useState(true);
+  const [modalVisible, setModalVisible] = React.useState(false);
 
   return (
+    
     <View style={estilo}> 
 
     <Modal

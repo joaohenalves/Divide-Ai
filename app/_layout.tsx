@@ -2,7 +2,6 @@ import { Stack } from 'expo-router';
 import React from 'react';
 import * as Font from 'expo-font';
 
-
 export default function TabLayout() {
 
   const [fontsLoaded] = Font.useFonts({
@@ -14,7 +13,7 @@ export default function TabLayout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(main)" options={{ headerShown: false }} />
+      <Stack.Screen name="(main)" options={{ headerShown: false}} />
     </Stack>
   );
 }

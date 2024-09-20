@@ -1,46 +1,61 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import * as Font from 'expo-font';
-
+import * as config from '@/config';
+import { Header } from '@/components/Header';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
-  // const [fontsLoaded] = Font.useFonts({
-  //   MuseoModernoRegular: require('../assets/fonts/MuseoModerno-Regular.ttf'),
-  //   MuseoModernoSemiBold : require('../assets/fonts/MuseoModerno-SemiBold.ttf'),
-  //   MuseoModernoLight : require('../assets/fonts/MuseoModerno-Light.ttf'),
-  // });
+  const [backgroundColor, setBackgroundColor] = React.useState(Colors[colorScheme ?? 'light'].background);
+  const user = config.currentUser.name;
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+    <SafeAreaView style={{flex: 1, backgroundColor: backgroundColor}} edges={["top", 'left', 'right']} >
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        }}>
+        <Tabs.Screen
+          name="index"
+          key={1}
+          options={{
+        headerShown: true,
+        title: 'Home',
+        tabBarIcon: ({ color, focused }) => (
+          <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+        ),
+        header(props) {
+          return <Header user={user} {...props} />;
+        },
+        }}
+        listeners={{
+          tabPress: (e) => {
+            setBackgroundColor(Colors[colorScheme ?? 'light'].background);
+        },
+          }}
+        />
+        <Tabs.Screen
+          name="novaComanda"
+          key={2}
+          options={{
         headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          headerShown: false,
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
+        title: 'Nova Comanda',
+        tabBarIcon: ({ color, focused }) => (
+          <TabBarIcon name={focused ? 'receipt' : 'receipt-outline'} color={color} />
+        )
         }}
-      />
-      <Tabs.Screen
-        name="novaComanda"
-        options={{
-          headerShown: false,
-          title: 'Nova Comanda',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'receipt' : 'receipt-outline'} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+        listeners={{
+          tabPress: (e) => {
+            setBackgroundColor(Colors.light.contrast_backgroud);
+        },
+          }}
+        />
+      </Tabs>
+    </SafeAreaView>
   );
 }

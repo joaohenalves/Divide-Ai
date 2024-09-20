@@ -19,14 +19,15 @@ const estiloConteiner: ViewStyle = {
 
   backgroundColor: 'white',
   position: 'relative',
-  bottom: -90,
+  bottom: 0,
 
-  height: '85%',
+  maxHeight: '100%',
   width: '100%',
 
   borderTopEndRadius: 40,
   borderTopStartRadius: 40,
-  padding: 40
+  padding: 40,
+  paddingBottom: 0,
 
 };
 

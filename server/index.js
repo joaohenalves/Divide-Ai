@@ -1,12 +1,9 @@
-const express = require('express');
 // const userRoutes = require('./routes/userRoutes');
-// const config = require('../config');
+const express = require('express');
+const config = require('../config');
 const cors = require('cors');
-const pgp = require("pg-promise")({});
-const database = "divide_ai_db";
-const username = "postgres";
-const password = "joaohenalves";
-const db = pgp(`postgres://${username}:${password}@localhost:5432/${database}`);
+const pgp = require('pg-promise')({});
+const db = pgp(`postgres://${config.user}:${config.password}@localhost:5432/${config.database}`);
 const app = express();
 // Middleware para parsing JSON
 app.use(express.json());
@@ -21,8 +18,8 @@ app.use(cors());
 //     console.log(`Server running on port ${config.port}`);
 // });
 
-app.listen(3001, () => {
-    console.log(`Server running on port ${3001}`);
+app.listen(config.port, () => {
+    console.log(`Server running on port ${config.port}`);
 });
 
 app.post("/cadastrocomanda", async (req, res) => {
@@ -40,15 +37,15 @@ app.post("/cadastrocomanda", async (req, res) => {
     }
 });
 
-app.delete("/apagarcomanda", async (req, res) => {
+app.put("/desativarcomanda", async (req, res) => {
     try {
         const data = parseInt(req.body.idComanda);
         console.log(`Apagando a comanda id ${data}`);
         await db.none(
-            "DELETE FROM comanda WHERE id = $1;",
+            "UPDATE comanda SET status_comanda = 0 WHERE id = $1;",
             [data]
         );
-        res.sendStatus(204);
+        res.sendStatus(201);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
@@ -58,12 +55,14 @@ app.delete("/apagarcomanda", async (req, res) => {
 app.put("/alterarcomanda", async (req, res) => {
     try {
         const data = req.body;
-        const colunas = ["empty", "nome = $2", "status = $3"];
-        let campos;
+        const colunas = ["empty", "nome_dono = $2", "status_comanda = $3"];
+        let campos = "";
         let index = 0;
         for(let v in data) {
             if(index > 0) {
-                campos += (campos != "" ? ", " : "") + colunas[index];
+                if(v != "") {
+                    campos += (campos != "" ? ", " : "") + colunas[index];
+                }
             }
             index++;
         }
@@ -82,10 +81,10 @@ app.put("/alterarcomanda", async (req, res) => {
 app.get("/selecionacomanda", async (req, res) => {
     try {
         const data = req.body;
-        console.log(`Recuperando dados da comanda ${data.id}`)
+        console.log(`Recuperando dados da(s) comanda(s) do dono ${data.nome}`)
         const result = await db.any(
-            "SELECT * FROM comanda WHERE id = $1;",
-            [data.id]
+            "SELECT * FROM comanda WHERE nome_dono = $1;",
+            [data.nome]
         );
         res.json(result).status(200);
     } catch(error) {

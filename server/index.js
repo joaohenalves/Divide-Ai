@@ -22,7 +22,7 @@ app.listen(config.port, () => {
     console.log(`Server running on port ${config.port}`);
 });
 
-app.post("/cadastrocomanda", async (req, res) => {
+app.post("/cadastrarcomanda", async (req, res) => {
     const data = req.body;
     try {
         console.log("Inserindo no banco a comanda de ", data.nome);
@@ -78,7 +78,7 @@ app.put("/alterarcomanda", async (req, res) => {
     }
 });
 
-app.get("/selecionacomanda", async (req, res) => {
+app.get("/selecionarcomandas", async (req, res) => {
     try {
         const data = req.body;
         console.log(`Recuperando dados da(s) comanda(s) do dono ${data.nome}`)

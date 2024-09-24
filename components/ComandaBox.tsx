@@ -3,6 +3,7 @@ import { View, ViewStyle, Text } from 'react-native';
 import { Comanda } from './Comanda';
 import { ScrollView } from 'native-base';
 import { NativeBaseProvider } from 'native-base';
+import React from 'react';
 
 const estilo: ViewStyle = {
 
@@ -36,35 +37,30 @@ const contentContainer: ViewStyle = {
   alignItems: 'center',
 
   width: '100%',
-  flexGrow: 1,
+
 }
 
-
-const comandas = require('@/comandas.json');
-
-//const comandas = [];
-
-export function ComandaBox() {
+export function ComandaBox(props: any) {
 
 
   return (
     
       <View style={estiloConteiner}>
         <NativeBaseProvider >
-        <ScrollView style={estilo} contentContainerStyle={contentContainer} showsVerticalScrollIndicator={false} > 
-          {comandas.length === 0 ? (
-            
-            <View style={{flexDirection:'column', alignItems:'center'}}>
-              <Text style={{ color: Colors.light.faintText , fontFamily: 'MuseoModernoRegular' }}>Não há comandas por aqui</Text>
-              <View style={{height: 1, width: '170%', backgroundColor: '#F3F3F3', marginTop: 10}}></View>
-            </View>
+          <ScrollView style={estilo} contentContainerStyle={contentContainer} showsVerticalScrollIndicator={false} > 
+            {props.comandas.length === 0 ? (
+              
+              <View style={{flexDirection:'column', alignItems:'center'}}>
+                <Text style={{ color: Colors.light.faintText , fontFamily: 'MuseoModernoRegular' }}>Não há comandas por aqui</Text>
+                <View style={{height: 1, width: '170%', backgroundColor: '#F3F3F3', marginTop: 10}}></View>
+              </View>
 
-          ) : comandas.map((comanda: any) => (
-              <Comanda key={comanda.id} comanda={comanda} />
+            ) : props.comandas.map((comanda: any) => (
+                <Comanda key={comanda.id} comanda={comanda} />
+              )
             )
-          )
-          }
-        </ScrollView>
+            }
+          </ScrollView>
         </NativeBaseProvider>
       </View>
     

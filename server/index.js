@@ -3,20 +3,12 @@ const express = require('express');
 const config = require('../config');
 const cors = require('cors');
 const pgp = require('pg-promise')({});
-const db = pgp(`postgres://${config.user}:${config.password}@localhost:5432/${config.database}`);
+const db = pgp(`postgres://${config.dbConfig.user}:${config.dbConfig.password}@localhost:5432/${config.dbConfig.database}`);
 const app = express();
 // Middleware para parsing JSON
 app.use(express.json());
 
 app.use(cors());
-
-// Rotas
-// app.use('/', userRoutes);
-
-// Inicia o servidor
-// app.listen(config.port, () => {
-//     console.log(`Server running on port ${config.port}`);
-// });
 
 app.listen(config.port, () => {
     console.log(`Server running on port ${config.port}`);
@@ -80,14 +72,14 @@ app.put("/alterarcomanda", async (req, res) => {
 
 app.get("/selecionarcomandas", async (req, res) => {
     try {
-        const data = req.body;
-        console.log(`Recuperando dados da(s) comanda(s) do dono ${data.nome}`)
+        const nomeDono = req.query.nome;
+        console.log(`Recuperando dados da(s) comanda(s) do dono ${nomeDono}`);
         const result = await db.any(
             "SELECT * FROM comanda WHERE nome_dono = $1;",
-            [data.nome]
+            [nomeDono]
         );
-        res.json(result).status(200);
-    } catch(error) {
+        res.status(200).json(result);
+    } catch (error) {
         console.log(error);
         res.sendStatus(400);
     }

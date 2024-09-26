@@ -17,7 +17,7 @@ app.listen(config.port, () => {
 app.post("/cadastrarcomanda", async (req, res) => {
     const data = req.body;
     try {
-        console.log("Inserindo no banco a comanda de ", data.nome);
+        console.log("Inserindo no banco a comanda de", data.nome);
         await db.none(
             "INSERT INTO comanda (nome_dono, data_hora, status_comanda) VALUES ($1, CURRENT_TIMESTAMP, 1);",
             [data.nome]

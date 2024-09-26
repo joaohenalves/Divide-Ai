@@ -40,7 +40,7 @@ app.post("/cadastrarcomanda", async (req, res) => {
 app.put("/desativarcomanda", async (req, res) => {
     try {
         const data = parseInt(req.body.idComanda);
-        console.log(`Apagando a comanda id ${data}`);
+        console.log(`Mudando o status da comanda id ${data}`);
         await db.none(
             "UPDATE comanda SET status_comanda = 0 WHERE id = $1;",
             [data]

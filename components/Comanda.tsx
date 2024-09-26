@@ -1,6 +1,6 @@
 import { Colors } from '../constants/Colors';
 import { View, ViewStyle, Text } from 'react-native';
-
+import { format } from 'date-fns';
 
 const estilo: ViewStyle = {
 
@@ -18,6 +18,8 @@ const estilo: ViewStyle = {
     borderRadius: 15, 
 
     backgroundColor: Colors.light.background,
+
+    
 };
 
 const estiloExtra = {
@@ -58,6 +60,9 @@ export function Comanda(props: any) {
 
     const comanda = props.comanda;
 
+    const dataFormatada = format(new Date(comanda.data_hora), 'dd/MM/yyyy HH:mm');
+
+
     return (
         <View style={estilo}> 
             <Text style={estiloExtra.titulo}>Comanda {comanda.id}</Text>
@@ -66,12 +71,12 @@ export function Comanda(props: any) {
 
             <View style={{flexDirection: 'row'}}> 
                 <Text style={estiloExtra.campos}>Proprietário: </Text> 
-                <Text style={estiloExtra.texto}>{comanda.proprietario}</Text>
+                <Text style={estiloExtra.texto}>{comanda.nome_dono}</Text>
             </View>
 
             <View style={{flexDirection: 'row'}}> 
                 <Text style={estiloExtra.campos}>Data de criação: </Text>
-                <Text style={estiloExtra.texto}>{comanda.dtCriacao}</Text>
+                <Text style={estiloExtra.texto}>{dataFormatada}</Text>
             </View>
 
             <Line />

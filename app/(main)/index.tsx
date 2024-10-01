@@ -46,7 +46,7 @@ export default function Index() {
         flexDirection: "column"
       }}
     >
-      <ComandaBox comandas={comandas}/>
+     <ComandaBox comandas={comandas}/>
     </View>
   );
 }

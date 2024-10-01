@@ -17,21 +17,27 @@ export default function TabLayout() {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: backgroundColor}} edges={["top", 'left', 'right']} >
       <Tabs
+        
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            height: 50
+          },
+    
         }}>
         <Tabs.Screen
           name="index"
           key={1}
           options={{
-        headerShown: true,
-        title: 'Home',
-        tabBarIcon: ({ color, focused }) => (
-          <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-        ),
-        header(props) {
-          return <Header user={user} {...props} />;
-        },
+          headerShown: true,
+          title: 'Home',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} size={35}/>
+          ),
+          header(props) {
+            return <Header user={user} {...props} />;
+          },
         }}
         listeners={{
           tabPress: (e) => {
@@ -43,11 +49,11 @@ export default function TabLayout() {
           name="novaComanda"
           key={2}
           options={{
-        headerShown: false,
-        title: 'Nova Comanda',
-        tabBarIcon: ({ color, focused }) => (
-          <TabBarIcon name={focused ? 'receipt' : 'receipt-outline'} color={color} />
-        )
+          headerShown: false,
+          title: 'Nova Comanda',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'receipt' : 'receipt-outline'} color={color} size={35}/>
+          )
         }}
         listeners={{
           tabPress: (e) => {

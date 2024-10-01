@@ -22,7 +22,6 @@ const estiloConteiner: ViewStyle = {
   position: 'relative',
   bottom: 0,
 
-  maxHeight: '100%',
   width: '100%',
 
   borderTopEndRadius: 40,
@@ -33,10 +32,6 @@ const estiloConteiner: ViewStyle = {
 };
 
 const contentContainer: ViewStyle = {
-
-  alignItems: 'center',
-
-  width: '100%',
 
 }
 

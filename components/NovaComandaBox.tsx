@@ -6,6 +6,7 @@ import { currentUser } from '@/config';
 import CustomButton from './CustomButton';
 import { StyleSheet } from 'react-native';
 import axios from 'axios';
+import { Modal} from "react-native";
 
 const estiloOuter: ViewStyle = {
     flexDirection: "column",
@@ -48,7 +49,20 @@ const styles = StyleSheet.create({
   },
 });
 
+
+
 export function NovaComandaBox() {
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
+  const showModalTemporarily = (message : string) => {
+    setModalMessage(message);
+    setModalVisible(true);
+    setTimeout(() => {
+      setModalVisible(false);
+    }, 3000); // Modal will be visible for 3 seconds
+  };
 
   const [text, setText] = useState('');
 
@@ -61,10 +75,13 @@ export function NovaComandaBox() {
       });
   
       console.log('Resposta do servidor:', response.data);
+
+      showModalTemporarily('Comanda criada com sucesso!');
     } catch (e) {
       
       setError(e instanceof Error ? e.message : String(e));
       console.error('Erro ao fazer a requisição:', e);
+      showModalTemporarily('Erro ao criar comanda!');
     }
   };
 
@@ -101,7 +118,19 @@ export function NovaComandaBox() {
             {error ? <Text style={{color: 'red', marginTop: 3}}>{error}</Text> : null}
             <CustomButton style={styles} onPress={cadastrar_comanda} title="Criar comanda" />
 
+
           </View>
+
+          <Modal 
+              animationType="slide" 
+              transparent={true} 
+              visible={modalVisible} 
+              onRequestClose={() => {setModalVisible(!modalVisible);}}
+            >
+              <View style={{alignSelf: 'center', justifyContent: 'center', alignItems: 'center', width: "80%", height: 30, backgroundColor: '#D3D3D3', position: 'absolute', bottom: "20%", borderRadius: 10}}>
+                <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', fontSize: 20}}>{modalMessage}</Text>
+              </View>
+            </Modal>
       </View>
   );
 }

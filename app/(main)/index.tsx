@@ -3,35 +3,17 @@ import { ComandaBox } from "@/components/ComandaBox";
 import React from "react";
 import { View} from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
-import axios from 'axios';
-import * as config from '@/config';
+import { useFetchComandas } from "@/hooks/useFetchComandas";
 
 export default function Index() {
-  
 
-  const [comandas, setComandas] = React.useState([]);
+  const { comandas, triggerRefresh } = useFetchComandas();
+  console.log(comandas)
 
   useFocusEffect(
     React.useCallback(() => {
 
-      const fetchComandas = async () => {
-        try {
-          const response = await axios.get(`http://${config.ip}${config.port}/selecionarcomandas`, {
-            params: {
-              nome: config.currentUser.name,  
-            }
-          });
-          setComandas(response.data);
-        } catch (error) {
-          console.error("Erro ao buscar as comandas: ", error);
-        }
-      };
-
-      fetchComandas();
-
-      return () => {
-        // Função de limpeza (opcional) pode ser executada aqui quando a tela perder foco
-      };
+      triggerRefresh();
     }, [])
   );
 

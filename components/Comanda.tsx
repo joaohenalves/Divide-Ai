@@ -4,6 +4,10 @@ import { format } from 'date-fns';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import TabelaItens from './TabelaItens';
+import axios from 'axios';
+import * as config from '@/config';
+import { useFetchComandas } from '@/hooks/useFetchComandas';
 
 const estilo: ViewStyle = {
 
@@ -44,8 +48,14 @@ const estiloExtra = {
       fontFamily: 'MuseoModernoRegular',
       fontSize: 18,
       margin: 3,
-    }
-    
+    },
+
+    camposInput: {  
+      color: Colors.light.faintText,
+      fontFamily: 'MuseoModernoRegular',
+      fontSize: 18,
+      margin: 3,
+    },
 }
 
 const lineStyle: ViewStyle = {
@@ -54,16 +64,21 @@ const lineStyle: ViewStyle = {
     backgroundColor: '#1F1300',
     margin:10,
     alignSelf: "center",
-    opacity: 0.4
+    opacity: 0.4,
+    
 };
+
 
 const Line = () => {
     return <View style={lineStyle}></View>;
 }
 
-export function Comanda(props: any) {
+const compras = require("@/compar.json")
+
+const Comanda = (props : any) => {
 
     const comanda = props.comanda;
+    const { triggerRefresh } = useFetchComandas();
 
     const dataFormatada = format(new Date(comanda.data_hora), 'dd/MM/yyyy HH:mm');
 
@@ -71,19 +86,42 @@ export function Comanda(props: any) {
     const [alter, setAlter] = React.useState(false);
     const [nome, setNome] = React.useState(comanda.nome_dono);
 
-    return (
+    const finalizar_comanda: any = async (user : string, id : any) => {
+
+      try {
+
+        const response = await axios.put('http://' + config.ip + config.port + "/alterarcomanda", {
+          id: id,
+          nome: user,
+          status: 0 
+        });
+        comanda.status_comanda = 0;
+        console.log('Resposta do servidor:', response.data);
+        triggerRefresh();
+
+        //showModalTemporarily('Comanda criada com sucesso!');
+      } catch (e) {
+        
+        //setError(e instanceof Error ? e.message : String(e));
+        console.error('Erro ao fazer a requisição:', e);
+        //showModalTemporarily('Erro ao criar comanda!');
+      }
+    };
+
+    if (comanda.status_comanda == 1) {
+    return ( 
         <TouchableOpacity style={estilo} activeOpacity={0.85} disabled={true}>
             
             <View style={{flexDirection: 'row', justifyContent: 'space-between', width: "100%"}}>
 
-                <Text style={estiloExtra.titulo}>Comanda {comanda.id}</Text>
+                <Text style={estiloExtra.titulo}>Comanda {comanda.id}  {comanda.status_comanda}</Text>
             
                 <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-                    
-                    <Ionicons name= {"create"} color ={Colors.light.icon} size={30} style={{marginHorizontal: 10, zIndex: 100}} onPress={() => setAlter(!alter)}/>
+                  
+                  <Ionicons name={"create"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10, zIndex: 100}} onPress={() => setAlter(!alter)}/>
 
-                    <Ionicons name= {"trash"} color ={Colors.light.icon} size={30} style={{marginHorizontal: 10}} />   
-                    
+                  <Ionicons name={"trash"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => finalizar_comanda(comanda.nome_dono, comanda.id)}/>   
+                  
                 </View>
 
             </View>
@@ -94,7 +132,7 @@ export function Comanda(props: any) {
             <Text style={estiloExtra.campos}>Proprietário:</Text>
             {
                 !alter ? <Text style={estiloExtra.texto}>{comanda.nome_dono}</Text> :
-                <TextInput style={estiloExtra.campos} value={nome} onChangeText={(text) => setNome(text)} />
+                <TextInput style={estiloExtra.camposInput} value={nome} onChangeText={(text) => setNome(text)} />
 
             }
           </View>
@@ -105,15 +143,12 @@ export function Comanda(props: any) {
           </View>
     
           <Line />
-
-            
     
           {expanded && (
             
-            <View>
-              <Text style={estiloExtra.campos}>Detalhes adicionais...</Text>
-
-              <Line />
+            <View style={{width: "100%"}}>
+              <TabelaItens itens={compras} />
+              
             </View>
           )}
 
@@ -121,5 +156,12 @@ export function Comanda(props: any) {
           : <Ionicons name='chevron-down' size={20} color={Colors.light.icon} style={{ alignSelf: 'center' }}  onPress={() => setExpanded(!expanded)}/>}
 
         </TouchableOpacity>
-      );
+      );}
+      else {
+        return (
+          <View></View>
+        )
+      }
 }
+
+export default Comanda;

@@ -1,6 +1,6 @@
 import { Colors } from '../constants/Colors';
 import { View, ViewStyle, Text } from 'react-native';
-import { Comanda } from './Comanda';
+import Comanda from './Comanda';
 import { ScrollView } from 'native-base';
 import { NativeBaseProvider } from 'native-base';
 import React from 'react';
@@ -37,6 +37,7 @@ const contentContainer: ViewStyle = {
 
 export function ComandaBox(props: any) {
 
+  //const comandas_ativas = props.comandas.filter((comanda: any) => comanda.status_comanda == 1);
 
   return (
     
@@ -50,7 +51,7 @@ export function ComandaBox(props: any) {
                 <View style={{height: 1, width: '170%', backgroundColor: '#F3F3F3', marginTop: 10}}></View>
               </View>
 
-            ) : props.comandas.map((comanda: any) => (
+            ) : props.comandas.map((comanda: any) => ( 
                 <Comanda key={comanda.id} comanda={comanda} />
               )
             )

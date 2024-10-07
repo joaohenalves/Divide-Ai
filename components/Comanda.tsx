@@ -114,7 +114,7 @@ const Comanda = (props : any) => {
             
             <View style={{flexDirection: 'row', justifyContent: 'space-between', width: "100%"}}>
 
-                <Text style={estiloExtra.titulo}>Comanda {comanda.id}  {comanda.status_comanda}</Text>
+                <Text style={estiloExtra.titulo}>Comanda {comanda.id}</Text>
             
                 <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
                   
@@ -144,16 +144,7 @@ const Comanda = (props : any) => {
     
           <Line />
     
-          {expanded && (
-            
-            <View style={{width: "100%"}}>
-              <TabelaItens itens={compras} />
-              
-            </View>
-          )}
 
-          {expanded ? <Ionicons name='chevron-up' size={20} color={Colors.light.icon} style={{ alignSelf: 'center' }} onPress={() => setExpanded(!expanded)}/>
-          : <Ionicons name='chevron-down' size={20} color={Colors.light.icon} style={{ alignSelf: 'center' }}  onPress={() => setExpanded(!expanded)}/>}
 
         </TouchableOpacity>
       );}

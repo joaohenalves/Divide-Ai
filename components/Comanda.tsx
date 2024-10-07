@@ -3,13 +3,11 @@ import { View, ViewStyle, Text } from 'react-native';
 import { format } from 'date-fns';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import TabelaItens from './TabelaItens';
-import axios from 'axios';
-import * as config from '@/config';
+import { Modal} from "react-native";
+import ComandaExpanded from './ComandaExpanded';
 import { useFetchComandas } from '@/hooks/useFetchComandas';
 
-const estilo: ViewStyle = {
+const estiloShrinked: ViewStyle = {
 
     flexDirection: "column",
     justifyContent: "center",
@@ -28,6 +26,8 @@ const estilo: ViewStyle = {
     zIndex: -1,
     
 };
+
+
 
 const estiloExtra = {
     titulo : {
@@ -78,39 +78,16 @@ const compras = require("@/compar.json")
 const Comanda = (props : any) => {
 
     const comanda = props.comanda;
+
+    const [expanded, setExpanded] = React.useState(false);
+
     const { triggerRefresh } = useFetchComandas();
 
     const dataFormatada = format(new Date(comanda.data_hora), 'dd/MM/yyyy HH:mm');
 
-    const [expanded, setExpanded] = React.useState(false);
-    const [alter, setAlter] = React.useState(false);
-    const [nome, setNome] = React.useState(comanda.nome_dono);
-
-    const finalizar_comanda: any = async (user : string, id : any) => {
-
-      try {
-
-        const response = await axios.put('http://' + config.ip + config.port + "/alterarcomanda", {
-          id: id,
-          nome: user,
-          status: 0 
-        });
-        comanda.status_comanda = 0;
-        console.log('Resposta do servidor:', response.data);
-        triggerRefresh();
-
-        //showModalTemporarily('Comanda criada com sucesso!');
-      } catch (e) {
-        
-        //setError(e instanceof Error ? e.message : String(e));
-        console.error('Erro ao fazer a requisição:', e);
-        //showModalTemporarily('Erro ao criar comanda!');
-      }
-    };
-
     if (comanda.status_comanda == 1) {
     return ( 
-        <TouchableOpacity style={estilo} activeOpacity={0.85} disabled={true}>
+        <TouchableOpacity style={estiloShrinked} activeOpacity={0.85} onPress={() => {setExpanded(!expanded)}}>
             
             <View style={{flexDirection: 'row', justifyContent: 'space-between', width: "100%"}}>
 
@@ -118,9 +95,6 @@ const Comanda = (props : any) => {
             
                 <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
                   
-                  <Ionicons name={"create"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10, zIndex: 100}} onPress={() => setAlter(!alter)}/>
-
-                  <Ionicons name={"trash"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => finalizar_comanda(comanda.nome_dono, comanda.id)}/>   
                   
                 </View>
 
@@ -130,11 +104,7 @@ const Comanda = (props : any) => {
     
           <View style={{ flexDirection: 'row' }}>
             <Text style={estiloExtra.campos}>Proprietário:</Text>
-            {
-                !alter ? <Text style={estiloExtra.texto}>{comanda.nome_dono}</Text> :
-                <TextInput style={estiloExtra.camposInput} value={nome} onChangeText={(text) => setNome(text)} />
-
-            }
+            <Text style={estiloExtra.texto}>{comanda.nome_dono}</Text>
           </View>
     
           <View style={{ flexDirection: 'row' }}>
@@ -143,8 +113,23 @@ const Comanda = (props : any) => {
           </View>
     
           <Line />
-    
 
+            <Modal
+              transparent={true}
+              visible={expanded}
+              onRequestClose={() => {
+                setExpanded(!expanded)
+                triggerRefresh();
+              }}
+            >
+                <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.5)", alignItems: 'center', justifyContent: "center"}}>
+
+                  <ComandaExpanded comanda={comanda} close={setExpanded}/>
+
+                </View>
+
+            </Modal>
+    
 
         </TouchableOpacity>
       );}

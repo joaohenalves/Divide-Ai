@@ -1,5 +1,4 @@
-import { useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import * as config from '@/config';
 
@@ -7,7 +6,7 @@ export const useFetchComandas = () => {
   const [comandas, setComandas] = useState([]);
   const [refresh, setRefresh] = useState(0);
 
-  useFocusEffect(
+  useEffect(
     useCallback(() => {
       const fetchComandas = async () => {
         try {

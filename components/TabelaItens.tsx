@@ -1,11 +1,14 @@
+import { ScrollView } from 'native-base';
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import Item from './Item';
+import { Ionicons } from '@expo/vector-icons';
 
 const lineStyle: ViewStyle = {
     height: 1,
     width: '100%',
     backgroundColor: '#1F1300',
-    margin:10,
+    marginVertical:1,
     alignSelf: "center",
     opacity: 0.4,
     
@@ -18,15 +21,18 @@ export default function TabelaItens(props: any) {
                     <Text style={styles.tableHeaderText}>Item</Text>
                     <Text style={styles.tableHeaderText}>Qtd.</Text>
                     <Text style={styles.tableHeaderText}>Valor</Text>
+                    <Ionicons name="trash" size={22} color="transparent" style={{marginHorizontal: 5}}/>
+                    <Ionicons name="trash" size={22} color="transparent" style={{marginHorizontal: 5}}/>
                 </View>
+
+                <View style={lineStyle}></View>
                 
+                <ScrollView style={{maxHeight: 150}} showsVerticalScrollIndicator={false}>
                 {props.itens.map((item: any, index: number) => (
-                    <View key={index} style={styles.tableRow}>
-                        <Text style={styles.tableRowText}>{item.nomeCompra}</Text>
-                        <Text style={styles.tableRowText}>{item.quantidade}</Text>
-                        <Text style={styles.tableRowText}>R$ {item.valorCompra}</Text>
-                    </View>
+                    
+                    <Item key={index} item={item} />
                 ))}
+                </ScrollView>
             </View>
         );
     }
@@ -34,29 +40,18 @@ export default function TabelaItens(props: any) {
     const styles = StyleSheet.create({
         tableContainer: {
             flex: 1,
-            margin: 5,
+            marginHorizontal: 5,
         },
         tableHeader: {
+            width: '100%',
             flexDirection: 'row',
-            
-            borderBottomWidth: 1,
-            borderBottomColor: '#1F1300',
-            margin: 5,
+            alignContent: 'center',
 
         },
         tableHeaderText: {
-            flex: 1,
-            fontWeight: 'bold',
+            fontSize: 16,
             textAlign: 'left',
-        },
-        tableRow: {
-            flexDirection: 'row',
-            borderBottomWidth: 1,
-            borderBottomColor: '#1F1300',
-            padding: 5,
-        },
-        tableRowText: {
+            fontFamily: 'MuseoModernoRegular',
             flex: 1,
-            textAlign: 'left',
         },
     });

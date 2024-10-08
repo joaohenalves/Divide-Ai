@@ -58,5 +58,35 @@
                 "idDividendo": 2
             }
         ]
+    },
+    {
+        "nomeCompra": "carne",
+        "valorCompra": 50.00,
+        "quantidade": 1,
+        "dividendos" : [
+            {
+                "nomeDividendo": "joao",
+                "idDividendo": 1
+            },
+            {
+                "nomeDividendo": "maria",
+                "idDividendo": 2
+            }
+        ]
+    },
+    {
+        "nomeCompra": "cerveja2",
+        "valorCompra": 20.00,
+        "quantidade": 3,
+        "dividendos" : [
+            {
+                "nomeDividendo": "joao",
+                "idDividendo": 1
+            },
+            {
+                "nomeDividendo": "maria",
+                "idDividendo": 2
+            }
+        ]
     }
 ]

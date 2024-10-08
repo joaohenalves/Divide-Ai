@@ -85,12 +85,28 @@ export default function ComandaExpanded(props: any){
                 </View>
 
                 <Modal
-                    visible={confirmarModal}>
+                    visible={confirmarModal}
+                    transparent={true}
+                >
+                    <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.8)", alignItems: 'center', justifyContent: "center"}}>
 
-                    <View style={{height: "20%", width:"20%", position: 'absolute', alignSelf: 'center', backgroundColor: 'white', borderRadius: 20, }}>
-                        <Text>Tem certeza que deseja finalizar a comanda?</Text>
-                        <Ionicons name={"checkmark"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirma()}/> 
-                        <Ionicons name={"close"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => setconfirmarModal(!confirmarModal)}/> 
+                        <View style={{padding: 10, width: "70%", backgroundColor: 'white', borderRadius: 20, flexDirection: 'column', alignContent: "center", justifyContent: "center" }}>
+                            
+                            <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}}>Tem certeza que deseja finalizar a comanda?</Text>
+                            
+                            <View style={{flexDirection: 'row', width: "100%"}}>
+                                
+                                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                                    <Ionicons name={"checkmark-sharp"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirma()}/>
+                                    <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}} onPress={() => confirma()}>Sim</Text>
+                                </View>
+
+                                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                                    <Ionicons name={"close"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => setconfirmarModal(!confirmarModal)}/>
+                                    <Text style={{fontFamily: 'MuseoModernoSemiBold', margin: 10}} onPress={() => setconfirmarModal(!confirmarModal)}>Cancelar</Text>
+                                </View>
+                            </View>
+                        </View>
                     </View>
                 </Modal>
 

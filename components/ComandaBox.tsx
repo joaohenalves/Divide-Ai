@@ -31,20 +31,17 @@ const estiloConteiner: ViewStyle = {
 
 };
 
-const contentContainer: ViewStyle = {
-
-}
 
 export function ComandaBox(props: any) {
 
-  //const comandas_ativas = props.comandas.filter((comanda: any) => comanda.status_comanda == 1);
+  const validComandas = props.comandas.filter((comanda: any) => comanda.status_comanda == props.active);
 
   return (
     
       <View style={estiloConteiner}>
         <NativeBaseProvider >
-          <ScrollView style={estilo} contentContainerStyle={contentContainer} showsVerticalScrollIndicator={false} > 
-            {props.comandas.length === 0 ? (
+          <ScrollView style={estilo} showsVerticalScrollIndicator={false} > 
+            {validComandas.length === 0 ? (
               
               <View style={{flexDirection:'column', alignItems:'center'}}>
                 <Text style={{ color: Colors.light.faintText , fontFamily: 'MuseoModernoRegular' }}>Não há comandas por aqui</Text>
@@ -52,7 +49,7 @@ export function ComandaBox(props: any) {
               </View>
 
             ) : props.comandas.map((comanda: any) => ( 
-                <Comanda key={comanda.id} comanda={comanda} />
+                <Comanda key={comanda.id} comanda={comanda} active={props.active}/>
               )
             )
             }

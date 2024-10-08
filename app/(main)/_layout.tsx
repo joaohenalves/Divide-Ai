@@ -36,7 +36,7 @@ export default function TabLayout() {
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} size={35}/>
           ),
           header(props) {
-            return <Header user={user} {...props} />;
+            return <Header user={user} tela={"Tela de controle (comandas ativas)"} {...props} />;
           },
         }}
         listeners={{
@@ -52,12 +52,31 @@ export default function TabLayout() {
           headerShown: false,
           title: 'Nova Comanda',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'receipt' : 'receipt-outline'} color={color} size={35}/>
+            <TabBarIcon name={focused ? 'add-circle' : 'add-circle-outline'} color={color} size={35}/>
           )
         }}
         listeners={{
           tabPress: (e) => {
             setBackgroundColor(Colors.light.contrast_backgroud);
+        },
+          }}
+        />
+        <Tabs.Screen
+          name="Historico"
+          key={1}
+          options={{
+          headerShown: true,
+          title: 'Histórico',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'time' : 'time-outline'} color={color} size={35}/>
+          ),
+          header(props) {
+            return <Header user={user} tela={"Histórico de comandas"} {...props} />;
+          },
+        }}
+        listeners={{
+          tabPress: (e) => {
+            setBackgroundColor(Colors[colorScheme ?? 'light'].background);
         },
           }}
         />

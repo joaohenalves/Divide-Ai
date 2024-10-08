@@ -58,7 +58,7 @@ export default function Login(props: any) {
       
       <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', marginLeft: 10, marginTop: 15, fontSize: 15, alignSelf: "flex-start",}}>Email</Text>
       <TextInput
-        style={{height: '20%', width: '100%', borderRadius: 20, padding: 20, backgroundColor: Colors.light.background}}
+        style={{height: '10%', width: '100%', borderRadius: 20, padding: 20, backgroundColor: Colors.light.background}}
         placeholder="Escreva aqui"
         placeholderTextColor={Colors.light.faintText}
         onChangeText={(value) => setText(value)}
@@ -68,34 +68,35 @@ export default function Login(props: any) {
 
       <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', marginLeft: 10, marginTop: 5, fontSize: 15, alignSelf: "flex-start",}}>Senha</Text>
       <TextInput
-        style={{height: '20%', width: '100%', borderRadius: 20, padding: 20, backgroundColor: Colors.light.background}}
+        style={{height: '10%', width: '100%', borderRadius: 20, padding: 20, backgroundColor: Colors.light.background}}
         placeholder="Escreva aqui"
         placeholderTextColor={Colors.light.faintText}
         onChangeText={(value) => setText(value)}
         value={text}
 
       />
+      <View>
+        <CustomButton onPress={
+        () => {
+        validateAndNavigate();
+        }} 
+        title={"Continuar"}
+        style={styles} 
+        />
+        </View>
 
-      <CustomButton onPress={
-      () => {
-      validateAndNavigate();
-      }} 
-      title={"Continuar"}
-      style={styles} 
-      />
-      </View>
-
-      <Text 
-        onPress={() => router.push({ pathname: '/Cadastro'})} 
-        style={{ color: Colors.light.text , 
-                  fontFamily: 'MuseoModernoLight', 
-                  fontSize: 15, 
-                  alignSelf: "center",
-                  marginVertical: 15,
-                  borderBottomColor: Colors.light.contrast_backgroud,
-                  borderBottomWidth: 1,
-                  }}>Ainda não tenho cadastro
-        </Text>
+        <Text 
+          onPress={() => router.push({ pathname: '/Cadastro'})} 
+          style={{ color: Colors.light.text , 
+                    fontFamily: 'MuseoModernoLight', 
+                    fontSize: 15, 
+                    alignSelf: "center",
+                    marginVertical: 15,
+                    borderBottomColor: Colors.light.contrast_backgroud,
+                    borderBottomWidth: 1,
+                    }}>Ainda não tenho cadastro
+          </Text>
+        </View>
       
     </View>
   );

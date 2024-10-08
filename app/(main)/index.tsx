@@ -18,17 +18,16 @@ export default function Index() {
   );
 
   return (
-    
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: Colors.light.background,
-        flexDirection: "column"
-      }}
-    >
-     <ComandaBox comandas={comandas}/>
-    </View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: Colors.light.background,
+          flexDirection: "column"
+        }}
+      >
+      <ComandaBox comandas={comandas} active={1}/>
+      </View>
   );
 }

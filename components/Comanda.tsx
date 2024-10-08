@@ -85,7 +85,8 @@ const Comanda = (props : any) => {
 
     const dataFormatada = format(new Date(comanda.data_hora), 'dd/MM/yyyy HH:mm');
 
-    if (comanda.status_comanda == 1) {
+
+    if (comanda.status_comanda == props.active) {
     return ( 
         <TouchableOpacity style={estiloShrinked} activeOpacity={0.85} onPress={() => {setExpanded(!expanded)}}>
             

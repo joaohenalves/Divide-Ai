@@ -51,7 +51,7 @@ export default function Cadastro() {
 
       <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', marginLeft: 10, marginTop: 15, fontSize: 15, alignSelf: "flex-start",}}>Nome de usuário</Text>
       <TextInput
-        style={{height: '20%', width: '100%', borderRadius: 20, padding: 20, backgroundColor: Colors.light.background}}
+        style={{height: '10%', width: '100%', borderRadius: 20, padding: 20, backgroundColor: Colors.light.background}}
         placeholder="Escreva aqui"
         placeholderTextColor={Colors.light.faintText}
         onChangeText={(value) => setUsername(value)}
@@ -61,7 +61,7 @@ export default function Cadastro() {
 
       <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', marginLeft: 10, marginTop: 10, fontSize: 15, alignSelf: "flex-start",}}>E-mail</Text>
       <TextInput
-        style={{height: '20%', width: '100%', borderRadius: 20, padding: 20, backgroundColor: Colors.light.background}}
+        style={{height: '10%', width: '100%', borderRadius: 20, padding: 20, backgroundColor: Colors.light.background}}
         placeholder="Escreva aqui"
         placeholderTextColor={Colors.light.faintText}
         onChangeText={(value) => setEmail(value)}
@@ -70,7 +70,7 @@ export default function Cadastro() {
 
       <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', marginLeft: 10, marginTop: 10, fontSize: 15, alignSelf: "flex-start",}}>Senha</Text>
       <TextInput
-        style={{height: '20%', width: '100%', borderRadius: 20, padding: 20, backgroundColor: Colors.light.background}}
+        style={{height: '10%', width: '100%', borderRadius: 20, padding: 20, backgroundColor: Colors.light.background}}
         placeholder="Escreva aqui"
         placeholderTextColor={Colors.light.faintText}
         onChangeText={(value) => setPassword(value)}

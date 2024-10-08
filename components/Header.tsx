@@ -63,7 +63,11 @@ export function Header( props : any) {
           </View>
       </Modal>
 
-      <Text style={{ color: Colors.light.text, fontSize: 24, fontFamily: 'MuseoModernoRegular' }}>Bem Vindo, {props.user}</Text>
+      <View style={{flexDirection: 'column'}}>  
+        <Text style={{ color: Colors.light.text, fontSize: 24, fontFamily: 'MuseoModernoRegular' }}>Bem Vindo, {props.user}</Text>
+        <Text style={{ color: Colors.light.faintText, fontSize: 20, fontFamily: 'MuseoModernoRegular'}}>{props.tela}</Text>
+      </View>
+
       <Ionicons name="information-circle-outline" size={40} color={Colors.light.icon} onPress={() => {setinfo(!info)}} />
 
     </View>

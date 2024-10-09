@@ -26,7 +26,8 @@ const estiloOuter: ViewStyle = {
 
 const estiloInner: ViewStyle = {
   flexDirection: "column",
-  justifyContent: "flex-start",
+
+  justifyContent: "space-between",
   width: '100%',
 
 };
@@ -103,13 +104,30 @@ export function NovaComandaBox() {
                 <View style={{height: 1, width: '13%', backgroundColor: Colors.light.contrast_backgroud, alignSelf: "flex-start"}}></View>
 
                 <TextInput
-                      style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 15, backgroundColor: Colors.light.background}}
+                      style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}
                       placeholder="Sem título por enquanto"
                       placeholderTextColor={Colors.light.faintText}
                       onChangeText={(value) => setText(value)}
                       value={text}
                 />         
               </View>
+
+              <View style={{height: 1, width: '100%', backgroundColor: '#F3F3F3', marginVertical: 10}}></View>
+
+              <View style={{flexDirection:'column', width: "100%"}}>
+                <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', fontSize: 20, alignSelf: "flex-start",}}>Senha:</Text>
+                <View style={{height: 1, width: '16%', backgroundColor: Colors.light.contrast_backgroud, alignSelf: "flex-start"}}></View>
+
+                <TextInput
+                      style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}
+                      placeholder="Sem senha por enquanto"
+                      placeholderTextColor={Colors.light.faintText}
+                      onChangeText={(value) => setText(value)}
+                      value={text}
+                />         
+              </View>
+
+              
           </View>    
 
           <View style={estiloInner}> 
@@ -127,7 +145,7 @@ export function NovaComandaBox() {
               visible={modalVisible} 
               onRequestClose={() => {setModalVisible(!modalVisible);}}
             >
-              <View style={{alignSelf: 'center', justifyContent: 'center', alignItems: 'center', width: "80%", height: 30, backgroundColor: '#D3D3D3', position: 'absolute', bottom: "20%", borderRadius: 10}}>
+              <View style={{alignSelf: 'center', justifyContent: 'center', alignItems: 'center', width: "80%", height: 30, backgroundColor: '#D3D3D3', position: 'absolute', bottom: "20%", borderRadius: 10, zIndex: -1}}>
                 <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', fontSize: 20}}>{modalMessage}</Text>
               </View>
             </Modal>

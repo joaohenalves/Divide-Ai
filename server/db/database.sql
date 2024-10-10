@@ -4,6 +4,7 @@ CREATE DATABASE divide_ai_db;
 
 DROP TABLE IF EXISTS comanda;
 DROP TABLE IF EXISTS usuario;
+CREATE EXTENSION pgcrypto;
 
 CREATE TABLE comanda (
     id_comanda SERIAL,

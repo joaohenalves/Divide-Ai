@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import * as config from "@/config";
 import React, { useState } from "react";
 import CustomButton from "@/components/CustomButton";
+import { saveSession } from "@/components/User"
 
 
 export default function Cadastro() {
@@ -26,6 +27,7 @@ export default function Cadastro() {
     } else {
       setError('');
 
+      //saveSession(token, username, email);
       config.currentUser.name = username;
       router.push({ pathname: '/(main)'});
       

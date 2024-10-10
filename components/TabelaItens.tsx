@@ -5,7 +5,7 @@ import Item from './Item';
 import { Ionicons } from '@expo/vector-icons';
 
 const lineStyle: ViewStyle = {
-    height: 1,
+    height: 2,
     width: '100%',
     backgroundColor: '#1F1300',
     marginVertical:1,
@@ -27,12 +27,25 @@ export default function TabelaItens(props: any) {
 
                 <View style={lineStyle}></View>
                 
-                <ScrollView style={{maxHeight: 150}} showsVerticalScrollIndicator={false}>
+                <ScrollView style={{maxHeight: 180}} showsVerticalScrollIndicator={false}>
                 {props.itens.map((item: any, index: number) => (
                     
                     <Item key={index} item={item} />
                 ))}
                 </ScrollView>
+
+                <View style={lineStyle}></View>
+
+                <View style={styles.tableHeader}>
+                    <Text style={styles.tableHeaderText}>Participantes:</Text>
+                </View>
+
+                <View style={lineStyle}></View>
+
+                <View style={styles.tableHeader}>
+                    <Text style={styles.tableHeaderText}>Valor Total:</Text>
+                </View>
+
             </View>
         );
     }

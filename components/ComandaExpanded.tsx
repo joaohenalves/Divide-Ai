@@ -8,6 +8,7 @@ import * as config from '@/config';
 import { useFetchComandas } from '@/hooks/useFetchComandas';
 import { format, set } from 'date-fns';
 import { Modal} from "react-native";
+import { findFocusedRoute } from '@react-navigation/native';
 
 export default function ComandaExpanded(props: any){
 
@@ -53,6 +54,8 @@ export default function ComandaExpanded(props: any){
       }
     };
 
+    const compras = require("@/compar.json")
+
     return(
             <View style={estiloExpanded}> 
 
@@ -82,6 +85,14 @@ export default function ComandaExpanded(props: any){
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={estiloExtra.campos}>Data de criação: </Text>
                     <Text style={estiloExtra.texto}>{dataFormatada}</Text>
+                </View>
+
+                <Line />
+
+                <View style={{width: "100%"}}>
+                    
+                    <TabelaItens itens={compras} />
+
                 </View>
 
                 <Modal

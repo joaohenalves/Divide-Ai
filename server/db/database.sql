@@ -11,6 +11,7 @@ CREATE TABLE comanda (
     id_dono INTEGER NOT NULL,
     data_hora TIMESTAMP NOT NULL,
     status_comanda INTEGER NOT NULL,
+    senha_comanda VARCHAR NOT NULL,
     CONSTRAINT pk_id PRIMARY KEY (id_comanda),
     CONSTRAINT fk_id_dono FOREIGN KEY (id_dono) REFERENCES usuario(id_usuario)
 );

@@ -83,6 +83,7 @@ const Comanda = (props : any) => {
 
     const { triggerRefresh } = useFetchComandas();
 
+
     const dataFormatada = format(new Date(comanda.data_hora), 'dd/MM/yyyy HH:mm');
 
 

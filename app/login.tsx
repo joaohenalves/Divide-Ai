@@ -3,6 +3,7 @@ import { Text, View, Image, TextInput, StyleSheet } from "react-native";
 import * as config from "@/config";
 import React, { useState } from "react";
 import CustomButton from "@/components/CustomButton";
+import { saveSession } from "@/components/User"
 
 const styles = StyleSheet.create({
   button: {
@@ -35,6 +36,7 @@ export default function Login(props: any) {
     } else {
       setError('');
 
+      //saveSession(token, username, email);
       config.currentUser.name = text;
       router.push({ pathname: '/(main)'});
       

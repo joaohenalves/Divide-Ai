@@ -87,13 +87,8 @@ app.put("/alterarcomanda", async (req, res) => {
 
 app.get("/selecionarcomandas", async (req, res) => {
     try {
-<<<<<<< HEAD
         const id_usuario = req.body.id_usuario;
         console.log(`Recuperando dados da(s) comanda(s) do dono ${id_usuario}`);
-=======
-        const nomeDono = req.body.nome;
-        console.log(`Recuperando dados da(s) comanda(s) do dono ${nomeDono}`);
->>>>>>> c844aa09516c919b293bb0e962b088a472908e74
         const result = await db.any(
             "SELECT * FROM comanda WHERE nome_dono = $1;",
             [id_usuario]
@@ -105,7 +100,6 @@ app.get("/selecionarcomandas", async (req, res) => {
     }
 });
 
-<<<<<<< HEAD
 app.post("/cadastrarpartcomanda", async (req, res) => {
     const data = req.body;
     try {
@@ -124,21 +118,6 @@ app.post("/cadastrarpartcomanda", async (req, res) => {
             res.sendStatus(401);
         }
     } catch(error) {
-=======
-app.get("/validarusuario", async (req, res) => {
-    try {
-        const emailUsuario = req.body.email;
-        const senhaUsuario = req.body.senha;
-        console.log(`Recuperando dados do usuario ${emailUsuario}`);
-        const result = await db.any(
-            
-            "SELECT CASE WHEN (SELECT count(id_usuario) FROM usuario WHERE email = $1 AND senha = crypt($2, senha)) >= 1 THEN 'TRUE' ELSE 'FALSE' END AS result;",
-
-            [emailUsuario,senhaUsuario]
-        );
-        res.status(200).json(result);
-    } catch (error) {
->>>>>>> c844aa09516c919b293bb0e962b088a472908e74
         console.log(error);
         res.sendStatus(400);
     }

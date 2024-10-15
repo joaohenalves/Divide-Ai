@@ -4,6 +4,9 @@ CREATE DATABASE divide_ai_db;
 
 DROP TABLE IF EXISTS comanda;
 DROP TABLE IF EXISTS usuario;
+DROP TABLE IF EXISTS item;
+DROP TABLE IF EXISTS part_comanda;
+DROP TABLE IF EXISTS part_item;
 CREATE EXTENSION pgcrypto;
 
 CREATE TABLE comanda (
@@ -23,4 +26,28 @@ CREATE TABLE usuario (
     senha VARCHAR NOT NULL,
     CONSTRAINT pk_id_usuario PRIMARY KEY (id_usuario),
     CONSTRAINT uk_email UNIQUE (email)
+);
+
+CREATE TABLE part_comanda (
+    id_comanda INTEGER NOT NULL,
+    id_usuario INTEGER NOT NULL,
+    CONSTRAINT fk_id_comanda FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda),
+    CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+    CONSTRAINT pk_part_comanda PRIMARY KEY (id_comanda, id_usuario)
+);
+
+CREATE TABLE item (
+    id_item SERIAL,
+    id_comanda INTEGER NOT NULL,
+    quantidade INTEGER NOT NULL,
+    preco REAL NOT NULL,
+    CONSTRAINT fk_id_comanda FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda),
+    CONSTRAINT pk_id_item PRIMARY KEY (id_item)
+);
+
+CREATE TABLE part_item (
+    id_item INTEGER NOT NULL,
+    id_usuario INTEGER NOT NULL,
+    CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+    CONSTRAINT pk_part_item PRIMARY KEY (id_item, id_usuario)
 );

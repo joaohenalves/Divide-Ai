@@ -19,8 +19,23 @@ app.post("/cadastrarcomanda", async (req, res) => {
     try {
         console.log("Inserindo no banco a comanda de", data.nome);
         await db.none(
-            "INSERT INTO comanda (nome_dono, data_hora, status_comanda) VALUES ($1, CURRENT_TIMESTAMP, 1);",
-            [data.nome]
+            "INSERT INTO comanda (id_dono, data_hora, status_comanda, senha_comanda) VALUES ($1, CURRENT_TIMESTAMP, 1, $2);",
+            [data.id_dono, data.senha_comanda]
+        );
+        res.sendStatus(201);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.post("/cadastrarusuario", async (req, res) => {
+    const data = req.body;
+    try {
+        console.log("Inserindo no banco o usuario", data.email);
+        await db.none(
+            "INSERT INTO usuario (nome_usuario, email, senha) VALUES ($1, $2, crypt($3, gen_salt('bf')));",
+            [data.nome_usuario, data.email, data.senha]
         );
         res.sendStatus(201);
     } catch(error) {
@@ -31,7 +46,7 @@ app.post("/cadastrarcomanda", async (req, res) => {
 
 app.put("/desativarcomanda", async (req, res) => {
     try {
-        const data = parseInt(req.body.idComanda);
+        const data = parseInt(req.body.id_comanda);
         console.log(`Mudando o status da comanda id ${data}`);
         await db.none(
             "UPDATE comanda SET status_comanda = 0 WHERE id = $1;",
@@ -72,14 +87,37 @@ app.put("/alterarcomanda", async (req, res) => {
 
 app.get("/selecionarcomandas", async (req, res) => {
     try {
-        const nomeDono = req.query.nome;
-        console.log(`Recuperando dados da(s) comanda(s) do dono ${nomeDono}`);
+        const id_usuario = req.body.id_usuario;
+        console.log(`Recuperando dados da(s) comanda(s) do dono ${id_usuario}`);
         const result = await db.any(
             "SELECT * FROM comanda WHERE nome_dono = $1;",
-            [nomeDono]
+            [id_usuario]
         );
         res.status(200).json(result);
     } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.post("/cadastrarpartcomanda", async (req, res) => {
+    const data = req.body;
+    try {
+        const comanda = await db.one(
+            "SELECT senha_comanda FROM comanda WHERE id_comanda = $1",
+            [data.id_comanda]
+        );
+        if(comanda.senha_comanda == data.senha_comanda) {
+            console.log("Inserindo na comanda o usuario", data.id_usuario);
+            await db.none(
+                "INSERT INTO part_comanda (id_comanda, id_usuario) VALUES ($1, $2);",
+                [data.id_comanda, data.id_usuario]
+            );
+            res.sendStatus(201);
+        } else {
+            res.sendStatus(401);
+        }
+    } catch(error) {
         console.log(error);
         res.sendStatus(400);
     }

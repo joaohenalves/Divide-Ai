@@ -39,6 +39,7 @@ CREATE TABLE part_comanda (
 CREATE TABLE item (
     id_item SERIAL,
     id_comanda INTEGER NOT NULL,
+    nome_item VARCHAR NOT NULL,
     quantidade INTEGER NOT NULL,
     preco REAL NOT NULL,
     CONSTRAINT fk_id_comanda FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda),

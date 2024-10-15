@@ -118,8 +118,21 @@ app.post("/cadastrarpartcomanda", async (req, res) => {
             res.sendStatus(401);
         }
     } catch(error) {
-<<<<<<< HEAD
-=======
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.post("/cadastraritem", async (req, res) => {
+    const data = req.body;
+    try {
+        console.log("Inserindo na comanda o item", data.nome_item);
+        await db.none(
+            "INSERT INTO item (id_comanda, nome_item, quantidade, preco) VALUES ($1, $2, $3, $4);",
+            [data.id_comanda, data.nome_item, data.quantidade, data.preco]
+        );
+        res.sendStatus(201);
+    } catch(error) {
         console.log(error);
         res.sendStatus(400);
     }
@@ -138,7 +151,6 @@ app.get("/validarusuario", async (req, res) => {
         );
         res.status(200).json(result);
     } catch (error) {
->>>>>>> 6d0a26288831d856fa2dae82ffaac1935ad38eff
         console.log(error);
         res.sendStatus(400);
     }

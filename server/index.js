@@ -78,7 +78,7 @@ app.put("/alterarcomanda", async (req, res) => {
             `UPDATE comanda SET ${campos} WHERE id = $1`,
             [data.id, data.nome, data.status]
         );
-        res.sendStatus(201);
+        res.sendStatus(200);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
@@ -193,3 +193,34 @@ app.get("/validarusuario", async (req, res) => {
         res.sendStatus(400);
     }
 });
+
+app.delete("/removerpartitem", async (req, res) => {
+    const data = req.body;
+    try {
+        console.log(`Removendo a pessoa ${data.id_usuario} do item ${data.id_item}`);
+        await db.none(
+            "DELETE FROM part_item WHERE id_item = $1 AND id_usuario = $2;",
+            [data.id_item, data.id_usuario]
+        );
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.post("/cadastrarpartitem", async (req, res) => {
+    const data = req.body;
+    try {
+        console.log(`Inserindo a participação do usuário ${data.id_usuario} no item ${data.id_item}`);
+        await db.none(
+            "INSERT INTO part_item (id_item, id_usuario) VALUES ($1, $2);",
+            [data.id_item, data.id_usuario]
+        );
+        res.sendStatus(201);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+

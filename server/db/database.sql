@@ -41,14 +41,15 @@ CREATE TABLE item (
     id_comanda INTEGER NOT NULL,
     nome_item VARCHAR NOT NULL,
     quantidade INTEGER NOT NULL,
-    preco REAL NOT NULL,
-    CONSTRAINT fk_id_comanda FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda),
+    preco MONEY NOT NULL,
+    CONSTRAINT fk_id_comanda FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda) ON DELETE CASCADE,
     CONSTRAINT pk_id_item PRIMARY KEY (id_item)
 );
 
 CREATE TABLE part_item (
     id_item INTEGER NOT NULL,
     id_usuario INTEGER NOT NULL,
-    CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+    CONSTRAINT fk_id_item FOREIGN KEY (id_item) REFERENCES item(id_item) ON DELETE CASCADE,
+    CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     CONSTRAINT pk_part_item PRIMARY KEY (id_item, id_usuario)
 );

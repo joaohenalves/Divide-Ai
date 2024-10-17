@@ -138,6 +138,44 @@ app.post("/cadastraritem", async (req, res) => {
     }
 });
 
+app.post("/atualizaritem", async (req, res) => {
+    const data = req.body;
+    try {
+        if(data.quantidade<=0){
+            console.log("Deletando na comanda o item", data.nome_item);
+            await db.none(
+                "DELETE FROM item WHERE id_item=$1;",
+                [data.id_item]
+            );
+        }
+        else{
+            console.log("Atualizando na comanda o item", data.nome_item);
+            await db.none(
+                "UPDATE item SET nome_item=$1, quantidade=$2, preco=$3 WHERE id_item=$4;",
+                [data.nome_item, data.quantidade, data.preco, data.id_item]
+            );
+        
+    }res.sendStatus(200);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+app.post("/deletaritem", async (req, res) => {
+    const data = req.body;
+    try {
+        console.log("Deletando na comanda o item", data.nome_item);
+        await db.none(
+            "DELETE FROM item WHERE id_item=$1;",
+            [data.id_item]
+        );
+        res.sendStatus(200);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
 app.get("/validarusuario", async (req, res) => {
     try {
         const emailUsuario = req.body.email;

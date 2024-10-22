@@ -47,7 +47,7 @@ export default function Login(props: any) {
         senha: senha
       });
 
-      console.log(response.data);
+      console.log(response.data.nome_usuario);
 
       if (response.data.error) {
         setError(response.data.error);

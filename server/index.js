@@ -216,7 +216,7 @@ app.post("/validarusuario", async (req, res) => {
         const senhaUsuario = req.body.senha;
         //"SELECT CASE WHEN (SELECT count(id_usuario) FROM usuario WHERE email = $1 AND senha = crypt($2, senha)) >= 1 THEN 'TRUE' ELSE 'FALSE' END AS result;",
         console.log(`Recuperando dados do usuario ${emailUsuario}`);
-        const result = await db.any(
+        const result = await db.one(
             
             "SELECT nome_usuario,email, id_usuario FROM usuario WHERE email = $1 AND senha = crypt($2, senha) AND status_usuario=1;",
 

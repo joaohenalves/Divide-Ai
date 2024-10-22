@@ -49,10 +49,10 @@ app.post("/atualizarusuario", async (req, res) => {
     try {
         console.log("Atualizando no banco o usuario", data.email);
         await db.none(
-            "UPDATE usuario SET nome_usuario=$1, email=$2, senha=crypt($3, gen_salt('bf')) WHERE email=$4 AND status_usuario=1;",
-            [data.nome_usuario, data.email, data.senha, data.status_usuario]
+            "UPDATE usuario SET nome_usuario=$1, senha=crypt($2, gen_salt('bf')) WHERE email=$3 AND status_usuario=1;",
+            [data.nome_usuario, data.senha, data.email]
         );
-        res.sendStatus(201);
+        res.sendStatus(200);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
@@ -62,12 +62,12 @@ app.post("/atualizarusuario", async (req, res) => {
 app.post("/deletarusuario", async (req, res) => {
     const data = req.body;
     try {
-        console.log("Atualizando no banco o usuario", data.email);
+        console.log("Deletando no banco o usuario", data.email);
         await db.none(
-            "UPDATE usuario SET nome_usuario=$1, email=$2, senha=crypt($3, gen_salt('bf')) WHERE email=$4 AND status_usuario=1;",
-            [data.nome_usuario, data.email, data.senha, data.status_usuario]
+            "UPDATE usuario SET status_usuario=0 WHERE email=$1 AND status_usuario=1;",
+            [data.email]
         );
-        res.sendStatus(201);
+        res.sendStatus(200);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);

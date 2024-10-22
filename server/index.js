@@ -223,3 +223,17 @@ app.post("/cadastrarpartitem", async (req, res) => {
     }
 });
 
+app.delete("/removerpartcomanda", async (req, res) => {
+    const data = req.body;
+    try {
+        console.log(`Removendo a pessoa ${data.id_usuario} da comanda ${data.id_comanda}`);
+        await db.none(
+            "DELETE FROM part_comanda WHERE id_comanda = $1 AND id_usuario = $2;",
+            [data.id_comanda, data.id_usuario]
+        );
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});

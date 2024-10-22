@@ -22,6 +22,10 @@ app.post("/cadastrarcomanda", async (req, res) => {
             "INSERT INTO comanda (id_dono, data_hora, status_comanda, senha_comanda) VALUES ($1, CURRENT_TIMESTAMP, 1, $2);",
             [data.id_dono, data.senha_comanda]
         );
+        await db.none(
+            "INSERT INTO part_comanda (id_comanda, id_usuario) VALUES ($1, $2);",
+            [data.id_comanda, data.id_dono]
+        );
         res.sendStatus(201);
     } catch(error) {
         console.log(error);
@@ -233,6 +237,66 @@ app.delete("/removerpartcomanda", async (req, res) => {
         );
         res.sendStatus(200);
     } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.get("/selecionarparticipantescomanda", async (req, res) =>  {
+    try {
+        const data = req.body;
+        console.log(`Recuperando dados dos participantes da comanda ${data.id_comanda}`);
+        const result = await db.all(
+            "SELECT u.nome_usuario, u.id_usuario FROM usuario u JOIN part_comanda pc ON pc.id_usuario = u.id_usuario WHERE pc.id_comanda = $1;",
+            [data.id_comanda]
+        );
+        res.status(200).json(result);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.get("/selecionarparticipantesitem", async (req, res) =>  {
+    try {
+        const data = req.body;
+        console.log(`Recuperando dados dos participantes do item ${data.id_item} da comanda ${data.id_comanda}`);
+        const result = await db.all(
+            "SELECT u.id_usuario, u.nome_usuario FROM usuario u JOIN part_item pi ON pi.id_usuario = u.id_usuario WHERE pi.id_item = $1;",
+            [data.id_comanda]
+        );
+        res.status(200).json(result);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.get("/selecionaritenscomanda", async (req, res) => {
+    try {
+        const data = req.body;
+        console.log(`Selecionando os itens da comanda ${data.id_comanda}`);
+        const result = await db.all(
+            "SELECT id_item, nome_item, quantidade, preco FROM item WHERE id_comanda = $1;",
+            [data.id_comanda]
+        );
+        res.status(200).json(result);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.get("/selecionarcomandasparticipadas", async (req, res) => {
+    try {
+        const data = req.body;
+        console.log(`Selecionando as comandas em que o usuário ${data.id_usuario} participa`);
+        const result = await db.all(
+            "SELECT c.id_comanda, c.id_dono, c.nome_comanda, c.data_hora FROM comanda c JOIN part_comanda pc ON pc.id_comanda = c.id_comanda WHERE pc.id_usuario = $1;",
+            [data.id_usuario]
+        );
+        res.status(200).json(result);
+    } catch(error) {
         console.log(error);
         res.sendStatus(400);
     }

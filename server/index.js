@@ -34,8 +34,38 @@ app.post("/cadastrarusuario", async (req, res) => {
     try {
         console.log("Inserindo no banco o usuario", data.email);
         await db.none(
-            "INSERT INTO usuario (nome_usuario, email, senha) VALUES ($1, $2, crypt($3, gen_salt('bf')));",
+            "INSERT INTO usuario (nome_usuario, email, senha) VALUES ($1, $2, crypt($3, gen_salt('bf')), 1);",
             [data.nome_usuario, data.email, data.senha]
+        );
+        res.sendStatus(201);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.post("/atualizarusuario", async (req, res) => {
+    const data = req.body;
+    try {
+        console.log("Atualizando no banco o usuario", data.email);
+        await db.none(
+            "UPDATE usuario SET nome_usuario=$1, email=$2, senha=crypt($3, gen_salt('bf')) WHERE email=$4 AND status_usuario=1;",
+            [data.nome_usuario, data.email, data.senha, data.status_usuario]
+        );
+        res.sendStatus(201);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.post("/deletarusuario", async (req, res) => {
+    const data = req.body;
+    try {
+        console.log("Atualizando no banco o usuario", data.email);
+        await db.none(
+            "UPDATE usuario SET nome_usuario=$1, email=$2, senha=crypt($3, gen_salt('bf')) WHERE email=$4 AND status_usuario=1;",
+            [data.nome_usuario, data.email, data.senha, data.status_usuario]
         );
         res.sendStatus(201);
     } catch(error) {
@@ -56,7 +86,7 @@ app.put("/desativarcomanda", async (req, res) => {
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
-    }
+    } 
 });
 
 app.put("/alterarcomanda", async (req, res) => {
@@ -78,7 +108,7 @@ app.put("/alterarcomanda", async (req, res) => {
             `UPDATE comanda SET ${campos} WHERE id = $1`,
             [data.id, data.nome, data.status]
         );
-        res.sendStatus(200);
+        res.sendStatus(201);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
@@ -144,7 +174,7 @@ app.post("/atualizaritem", async (req, res) => {
         if(data.quantidade<=0){
             console.log("Deletando na comanda o item", data.nome_item);
             await db.none(
-                "DELETE FROM item WHERE id_item=$1;",
+                "DELETE FROM item i,part_item p WHERE i.id_item=$1 or p.id_item=$1;",
                 [data.id_item]
             );
         }
@@ -154,14 +184,13 @@ app.post("/atualizaritem", async (req, res) => {
                 "UPDATE item SET nome_item=$1, quantidade=$2, preco=$3 WHERE id_item=$4;",
                 [data.nome_item, data.quantidade, data.preco, data.id_item]
             );
-        }
-        res.sendStatus(200);
+        
+    }res.sendStatus(200);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
     }
 });
-
 app.post("/deletaritem", async (req, res) => {
     const data = req.body;
     try {
@@ -181,9 +210,12 @@ app.get("/validarusuario", async (req, res) => {
     try {
         const emailUsuario = req.body.email;
         const senhaUsuario = req.body.senha;
+        //"SELECT CASE WHEN (SELECT count(id_usuario) FROM usuario WHERE email = $1 AND senha = crypt($2, senha)) >= 1 THEN 'TRUE' ELSE 'FALSE' END AS result;",
         console.log(`Recuperando dados do usuario ${emailUsuario}`);
         const result = await db.any(
-            "SELECT CASE WHEN (SELECT count(id_usuario) FROM usuario WHERE email = $1 AND senha = crypt($2, senha)) >= 1 THEN 'TRUE' ELSE 'FALSE' END AS result;",
+            
+            "SELECT nome_usuario,email FROM usuario WHERE email = $1 AND senha = crypt($2, senha) AND status_usuario=1;",
+
             [emailUsuario,senhaUsuario]
         );
         res.status(200).json(result);
@@ -192,7 +224,6 @@ app.get("/validarusuario", async (req, res) => {
         res.sendStatus(400);
     }
 });
-
 app.delete("/removerpartitem", async (req, res) => {
     const data = req.body;
     try {

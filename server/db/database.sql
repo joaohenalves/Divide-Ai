@@ -15,6 +15,7 @@ CREATE TABLE usuario (
     nome_usuario VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
     senha VARCHAR NOT NULL,
+    status_usuario INTEGER NOT NULL,
     CONSTRAINT pk_id_usuario PRIMARY KEY (id_usuario),
     CONSTRAINT uk_email UNIQUE (email)
 );

@@ -12,6 +12,8 @@ module.exports = {
     jwtSecret: 'mysecretkey',
 
     currentUser: {
-      name: 'none'
+      name: "null",
+      email: "null",
+      id: -1,
     }
   };

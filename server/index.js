@@ -38,7 +38,7 @@ app.post("/cadastrarusuario", async (req, res) => {
     try {
         console.log("Inserindo no banco o usuario", data.email);
         await db.none(
-            "INSERT INTO usuario (nome_usuario, email, senha) VALUES ($1, $2, crypt($3, gen_salt('bf')), 1);",
+            "INSERT INTO usuario (nome_usuario, email, senha, status_usuario) VALUES ($1, $2, crypt($3, gen_salt('bf')), 1);",
             [data.nome_usuario, data.email, data.senha]
         );
         res.sendStatus(201);
@@ -124,7 +124,7 @@ app.get("/selecionarcomandas", async (req, res) => {
         const id_usuario = req.body.id_usuario;
         console.log(`Recuperando dados da(s) comanda(s) do dono ${id_usuario}`);
         const result = await db.any(
-            "SELECT * FROM comanda WHERE nome_dono = $1;",
+            "SELECT * FROM comanda WHERE id_dono = $1;",
             [id_usuario]
         );
         res.status(200).json(result);
@@ -210,7 +210,7 @@ app.post("/deletaritem", async (req, res) => {
     }
 });
 
-app.get("/validarusuario", async (req, res) => {
+app.post("/validarusuario", async (req, res) => {
     try {
         const emailUsuario = req.body.email;
         const senhaUsuario = req.body.senha;
@@ -218,10 +218,11 @@ app.get("/validarusuario", async (req, res) => {
         console.log(`Recuperando dados do usuario ${emailUsuario}`);
         const result = await db.any(
             
-            "SELECT nome_usuario,email FROM usuario WHERE email = $1 AND senha = crypt($2, senha) AND status_usuario=1;",
+            "SELECT nome_usuario,email, id_usuario FROM usuario WHERE email = $1 AND senha = crypt($2, senha) AND status_usuario=1;",
 
             [emailUsuario,senhaUsuario]
         );
+        console.log(result);
         res.status(200).json(result);
     } catch (error) {
         console.log(error);

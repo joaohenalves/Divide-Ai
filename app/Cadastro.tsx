@@ -5,6 +5,8 @@ import * as config from "@/config";
 import React, { useState } from "react";
 import CustomButton from "@/components/CustomButton";
 import { saveSession } from "@/components/User"
+import axios from "axios";
+import { set } from "date-fns";
 
 
 export default function Cadastro() {
@@ -17,6 +19,37 @@ export default function Cadastro() {
   
   const [error, setError] = useState('');
 
+  function mask(password : string){
+    let masked = '';
+    for (let i = 0; i < password.length; i++){
+      masked += '*';
+    }
+    return masked;
+  }
+
+  const registarUser = async () => {
+    try {
+
+      const response = await axios.post(`http://${config.ip}${config.port}/cadastrarusuario`, {
+        nome_usuario: username,
+        email: email,
+        senha: password
+      });
+
+      if (response.data.error) {
+        setError(response.data.error);
+        return;
+      }
+
+      config.currentUser.name = username;
+      router.push({ pathname: '/(main)'});
+
+    } catch (error) {
+      setError('Erro ao cadastrar usuário.');
+      console.error(error);
+    }
+  }
+
   const validateAndNavigate = () => {
     if (username.trim() === '') {
       setError('O campo nome não pode estar vazio.');
@@ -27,9 +60,7 @@ export default function Cadastro() {
     } else {
       setError('');
 
-      //saveSession(token, username, email);
-      config.currentUser.name = username;
-      router.push({ pathname: '/(main)'});
+      registarUser();
       
     }
   };
@@ -72,11 +103,12 @@ export default function Cadastro() {
 
       <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', marginLeft: 10, marginTop: 10, fontSize: 15, alignSelf: "flex-start",}}>Senha</Text>
       <TextInput
+        
         style={{height: '10%', width: '100%', borderRadius: 20, padding: 20, backgroundColor: Colors.light.background}}
         placeholder="Escreva aqui"
         placeholderTextColor={Colors.light.faintText}
         onChangeText={(value) => setPassword(value)}
-        value={password}
+        value={mask(password)}
       />
 
       <CustomButton onPress={

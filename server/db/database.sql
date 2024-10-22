@@ -2,16 +2,17 @@ CREATE DATABASE divide_ai_db;
 
 \c divide_ai_db
 
-DROP TABLE IF EXISTS comanda;
-DROP TABLE IF EXISTS usuario;
-DROP TABLE IF EXISTS item;
 DROP TABLE IF EXISTS part_comanda;
 DROP TABLE IF EXISTS part_item;
+DROP TABLE IF EXISTS item;
+DROP TABLE IF EXISTS comanda;
+DROP TABLE IF EXISTS usuario;
 CREATE EXTENSION pgcrypto;
 
 CREATE TABLE comanda (
     id_comanda SERIAL,
     id_dono INTEGER NOT NULL,
+    nome_comanda VARCHAR NOT NULL,
     data_hora TIMESTAMP NOT NULL,
     status_comanda INTEGER NOT NULL,
     senha_comanda VARCHAR NOT NULL,

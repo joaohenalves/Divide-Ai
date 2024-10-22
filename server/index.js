@@ -56,7 +56,7 @@ app.put("/desativarcomanda", async (req, res) => {
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
-    } 
+    }
 });
 
 app.put("/alterarcomanda", async (req, res) => {
@@ -154,13 +154,14 @@ app.post("/atualizaritem", async (req, res) => {
                 "UPDATE item SET nome_item=$1, quantidade=$2, preco=$3 WHERE id_item=$4;",
                 [data.nome_item, data.quantidade, data.preco, data.id_item]
             );
-        
-    }res.sendStatus(200);
+        }
+        res.sendStatus(200);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
     }
 });
+
 app.post("/deletaritem", async (req, res) => {
     const data = req.body;
     try {
@@ -182,9 +183,7 @@ app.get("/validarusuario", async (req, res) => {
         const senhaUsuario = req.body.senha;
         console.log(`Recuperando dados do usuario ${emailUsuario}`);
         const result = await db.any(
-            
             "SELECT CASE WHEN (SELECT count(id_usuario) FROM usuario WHERE email = $1 AND senha = crypt($2, senha)) >= 1 THEN 'TRUE' ELSE 'FALSE' END AS result;",
-
             [emailUsuario,senhaUsuario]
         );
         res.status(200).json(result);

@@ -49,7 +49,7 @@ export function ComandaBox(props: any) {
               </View>
 
             ) : props.comandas.map((comanda: any) => ( 
-                <Comanda key={comanda.id} comanda={comanda} active={props.active}/>
+                <Comanda key={comanda.id_comanda} comanda={comanda} active={props.active}/>
               )
             )
             }

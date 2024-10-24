@@ -73,11 +73,11 @@ const Line = () => {
     return <View style={lineStyle}></View>;
 }
 
-const compras = require("@/compar.json")
 
 const Comanda = (props : any) => {
 
     const comanda = props.comanda;
+    console.log(comanda)
 
     const [expanded, setExpanded] = React.useState(false);
 
@@ -93,7 +93,7 @@ const Comanda = (props : any) => {
             
             <View style={{flexDirection: 'row', justifyContent: 'space-between', width: "100%"}}>
 
-                <Text style={estiloExtra.titulo}>Comanda {comanda.id}</Text>
+                <Text style={estiloExtra.titulo}>Comanda {comanda.id_comanda}</Text>
             
                 <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
                   

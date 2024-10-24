@@ -6,20 +6,23 @@ import TabelaItens from './TabelaItens';
 import axios from 'axios';
 import * as config from '@/config';
 import { useFetchComandas } from '@/hooks/useFetchComandas';
+import { useFetchItens } from '@/hooks/useFetchItens';
 import { format, set } from 'date-fns';
 import { Modal} from "react-native";
-import { findFocusedRoute } from '@react-navigation/native';
 
 export default function ComandaExpanded(props: any){
 
     const comanda = props.comanda;
     const { triggerRefresh } = useFetchComandas();
 
+    const {itens , triggerRefreshItens} = useFetchItens(comanda.id_comanda);
+
     const dataFormatada = format(new Date(comanda.data_hora), 'dd/MM/yyyy HH:mm');
 
     const [alter, setAlter] = React.useState(false);
     const [nome, setNome] = React.useState(comanda.nome_dono);
     const [confirmarModal, setconfirmarModal] = React.useState(false);
+
 
     const confirma: any = () => {
 
@@ -54,20 +57,19 @@ export default function ComandaExpanded(props: any){
       }
     };
 
-    const compras = require("@/compar.json")
-
     return(
             <View style={estiloExpanded}> 
 
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', width: "100%"}}>
 
-                    <Text style={estiloExtra.titulo}>Comanda {comanda.id}</Text>
+                    <Text style={estiloExtra.titulo}>Comanda {comanda.id_comanda}</Text>
             
                     <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
 
                         <Ionicons name={"close"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10, zIndex: 100}} onPress={() => props.close(false)}/>
 
-                        <Ionicons name={"create"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10, zIndex: 100}} onPress={() => setAlter(!alter)}/>
+                        {//<Ionicons name={"create"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10, zIndex: 100}} onPress={() => setAlter(!alter)}/>
+                        }
 
                         <Ionicons name={"trash"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirmar_finaliza()}/> 
                                     
@@ -76,6 +78,11 @@ export default function ComandaExpanded(props: any){
                 </View>
                     
                 <Line />
+
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={estiloExtra.campos}>Título:</Text>
+                    <Text style={estiloExtra.texto}>{comanda.nome_comanda}</Text>
+                </View>
             
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={estiloExtra.campos}>Proprietário:</Text>
@@ -91,13 +98,14 @@ export default function ComandaExpanded(props: any){
 
                 <View style={{width: "100%"}}>
                     
-                    <TabelaItens itens={compras} />
+                    <TabelaItens itens={itens} id_comanda={comanda.id_comanda} id_dono={comanda.id_dono} refreshItems={triggerRefreshItens}/>
 
                 </View>
 
                 <Modal
                     visible={confirmarModal}
                     transparent={true}
+                    
                 >
                     <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.8)", alignItems: 'center', justifyContent: "center"}}>
 

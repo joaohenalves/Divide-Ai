@@ -65,14 +65,17 @@ export function NovaComandaBox() {
     }, 3000); // Modal will be visible for 3 seconds
   };
 
-  const [text, setText] = useState('');
+  const [titulo, setTitulo] = useState('');
+  const [senha, setSenha] = useState('');
 
   const [error, setError] = useState('');
 
   const cadastrar_comanda: any = async () => {
     try {
       const response = await axios.post('http://' + config.ip + config.port + "/cadastrarcomanda", {
-        nome: currentUser.name,
+        id_dono: currentUser.id,
+        titulo: titulo,
+        senha_comanda: senha,
       });
   
       console.log('Resposta do servidor:', response.data);
@@ -107,8 +110,8 @@ export function NovaComandaBox() {
                       style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}
                       placeholder="Sem título por enquanto"
                       placeholderTextColor={Colors.light.faintText}
-                      onChangeText={(value) => setText(value)}
-                      value={text}
+                      onChangeText={(value) => setTitulo(value)}
+                      value={titulo}
                 />         
               </View>
 
@@ -122,8 +125,8 @@ export function NovaComandaBox() {
                       style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}
                       placeholder="Sem senha por enquanto"
                       placeholderTextColor={Colors.light.faintText}
-                      onChangeText={(value) => setText(value)}
-                      value={text}
+                      onChangeText={(value) => setSenha(value)}
+                      value={senha}
                 />         
               </View>
 

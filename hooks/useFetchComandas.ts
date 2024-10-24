@@ -12,7 +12,7 @@ export const useFetchComandas = () => {
     try {
       const response = await axios.get(`http://${config.ip}${config.port}/selecionarcomandas`, {
         params: {
-          nome: config.currentUser.name,
+          id_usuario: config.currentUser.id,
         }
       });
       setComandas(response.data);

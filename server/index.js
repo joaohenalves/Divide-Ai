@@ -18,13 +18,13 @@ app.post("/cadastrarcomanda", async (req, res) => {
     const data = req.body;
     try {
         console.log("Inserindo no banco a comanda de", data.nome);
-        await db.none(
-            "INSERT INTO comanda (id_dono, data_hora, status_comanda, senha_comanda) VALUES ($1, CURRENT_TIMESTAMP, 1, $2);",
-            [data.id_dono, data.senha_comanda]
+        const idComanda = await db.one(
+            "INSERT INTO comanda (id_dono, nome_comanda, data_hora, status_comanda, senha_comanda) VALUES ($1, $2, CURRENT_TIMESTAMP, 1, $3) RETURNING id_comanda;",
+            [data.id_dono, data.titulo, data.senha_comanda]
         );
         await db.none(
             "INSERT INTO part_comanda (id_comanda, id_usuario) VALUES ($1, $2);",
-            [data.id_comanda, data.id_dono]
+            [idComanda.id_comanda, data.id_dono]
         );
         res.sendStatus(201);
     } catch(error) {
@@ -121,10 +121,10 @@ app.put("/alterarcomanda", async (req, res) => {
 
 app.get("/selecionarcomandas", async (req, res) => {
     try {
-        const id_usuario = req.body.id_usuario;
+        const id_usuario = req.query.id_usuario;
         console.log(`Recuperando dados da(s) comanda(s) do dono ${id_usuario}`);
         const result = await db.any(
-            "SELECT * FROM comanda WHERE id_dono = $1;",
+            "SELECT c.*, u.nome_usuario as nome_dono FROM comanda c JOIN usuario u ON c.id_dono= u.id_usuario WHERE id_dono = $1;",
             [id_usuario]
         );
         res.status(200).json(result);
@@ -305,9 +305,9 @@ app.get("/selecionarparticipantesitem", async (req, res) =>  {
 
 app.get("/selecionaritenscomanda", async (req, res) => {
     try {
-        const data = req.body;
+        const data = req.query;
         console.log(`Selecionando os itens da comanda ${data.id_comanda}`);
-        const result = await db.all(
+        const result = await db.any(
             "SELECT id_item, nome_item, quantidade, preco FROM item WHERE id_comanda = $1;",
             [data.id_comanda]
         );

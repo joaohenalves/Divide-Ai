@@ -2,7 +2,7 @@ import { Colors } from "../constants/Colors";
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Modal} from "react-native";
+
 
 export default function Item(props: any) {
 
@@ -13,9 +13,9 @@ export default function Item(props: any) {
 
         <View style={styles.fullitem}>
             <View key={props.index} style={styles.tableRow}>
-                <Text style={styles.tableRowText}>{item.nomeCompra}</Text>
+                <Text style={styles.tableRowText}>{item.nome_item}</Text>
                 <Text style={styles.tableRowText}>{item.quantidade}</Text>
-                <Text style={styles.tableRowText}>R$ {item.valorCompra}</Text>
+                <Text style={styles.tableRowText}>{item.preco}</Text>
                 <Ionicons name="create-outline" size={22} color={Colors.light.icon} style={{marginHorizontal: 5}} />
 
                 {expanded ? <Ionicons name="chevron-up" size={22} color={Colors.light.icon} style={{marginHorizontal: 5}} onPress={() => setExpanded(!expanded)} />

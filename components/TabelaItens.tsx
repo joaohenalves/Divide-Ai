@@ -1,8 +1,11 @@
 import { ScrollView } from 'native-base';
+import { Colors } from '../constants/Colors';
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 import Item from './Item';
 import { Ionicons } from '@expo/vector-icons';
+import { Modal} from "react-native";
+import NewItem from './NewItem';
 
 const lineStyle: ViewStyle = {
     height: 2,
@@ -15,6 +18,9 @@ const lineStyle: ViewStyle = {
 };
 
 export default function TabelaItens(props: any) {
+
+    const [newi, setNewi] = React.useState(false);
+
         return (
             <View style={styles.tableContainer}>
                 <View style={styles.tableHeader}>
@@ -22,7 +28,7 @@ export default function TabelaItens(props: any) {
                     <Text style={styles.tableHeaderText}>Qtd.</Text>
                     <Text style={styles.tableHeaderText}>Valor</Text>
                     <Ionicons name="trash" size={22} color="transparent" style={{marginHorizontal: 5}}/>
-                    <Ionicons name="trash" size={22} color="transparent" style={{marginHorizontal: 5}}/>
+                    <Ionicons name="add" size={25} color={Colors.light.icon} style={{marginHorizontal: 10, backgroundColor: 'white', borderRadius: 10}} onPress={() => setNewi(!newi)} />
                 </View>
 
                 <View style={lineStyle}></View>
@@ -45,6 +51,21 @@ export default function TabelaItens(props: any) {
                 <View style={styles.tableHeader}>
                     <Text style={styles.tableHeaderText}>Valor Total:</Text>
                 </View>
+
+                <Modal
+                    transparent={true}
+                    visible={newi}
+                    onRequestClose={() => {
+                        setNewi(!newi);
+                    }}
+                    >
+                        <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.5)", alignItems: 'center', justifyContent: "center"}}>
+
+                            <NewItem id_comanda={props.id_comanda} setNewi={setNewi} />
+
+                        </View>
+
+                    </Modal>
 
             </View>
         );

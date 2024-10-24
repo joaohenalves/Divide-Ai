@@ -188,13 +188,13 @@ app.post("/atualizaritem", async (req, res) => {
                 "UPDATE item SET nome_item=$1, quantidade=$2, preco=$3 WHERE id_item=$4;",
                 [data.nome_item, data.quantidade, data.preco, data.id_item]
             );
-        
-    }res.sendStatus(200);
+        } res.sendStatus(200);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
     }
 });
+
 app.post("/deletaritem", async (req, res) => {
     const data = req.body;
     try {
@@ -218,7 +218,7 @@ app.get("/validarusuario", async (req, res) => {
         console.log(`Recuperando dados do usuario ${emailUsuario}`);
         const result = await db.any(
             
-            "SELECT nome_usuario,email FROM usuario WHERE email = $1 AND senha = crypt($2, senha) AND status_usuario=1;",
+            "SELECT id_usuario, nome_usuario, email FROM usuario WHERE email = $1 AND senha = crypt($2, senha) AND status_usuario=1;",
 
             [emailUsuario,senhaUsuario]
         );
@@ -228,6 +228,7 @@ app.get("/validarusuario", async (req, res) => {
         res.sendStatus(400);
     }
 });
+
 app.delete("/removerpartitem", async (req, res) => {
     const data = req.body;
     try {
@@ -272,6 +273,7 @@ app.delete("/removerpartcomanda", async (req, res) => {
         res.sendStatus(400);
     }
 });
+
 app.get("/selecionarparticipantescomanda", async (req, res) =>  {
     try {
         const data = req.body;

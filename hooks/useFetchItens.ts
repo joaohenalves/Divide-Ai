@@ -16,7 +16,7 @@ export const useFetchItens = (_comanda_id: number) => {
         }
       });
       setItens(response.data);
-      console.log('Itens da comanda:', response.data);
+      //console.log('Itens da comanda:', response.data);
     } catch (error) {
       console.error('Erro ao buscar as comandas: ', error);
     }

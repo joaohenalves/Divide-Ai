@@ -9,6 +9,9 @@ import { useFetchComandas } from '@/hooks/useFetchComandas';
 import { useFetchItens } from '@/hooks/useFetchItens';
 import { format, set } from 'date-fns';
 import { Modal} from "react-native";
+import { StyleSheet } from 'react-native';
+import Participante from './Participante';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function ComandaExpanded(props: any){
 
@@ -39,10 +42,8 @@ export default function ComandaExpanded(props: any){
 
       try {
 
-        const response = await axios.put('http://' + config.ip + config.port + "/alterarcomanda", {
-          id: id,
-          nome: user,
-          status: 0 
+        const response = await axios.put('http://' + config.ip + config.port + "/desativarcomanda", {
+            id_comanda: id
         });
         comanda.status_comanda = 0;
         console.log('Resposta do servidor:', response.data);
@@ -100,6 +101,19 @@ export default function ComandaExpanded(props: any){
                     
                     <TabelaItens itens={itens} id_comanda={comanda.id_comanda} id_dono={comanda.id_dono} refreshItems={triggerRefreshItens}/>
 
+                </View>
+
+                <View style={styles.tableHeader}>
+                    <Text style={styles.tableHeaderText}>Participantes:</Text>
+
+                    <Participante comanda_id={comanda.id_comanda}/>
+                </View>
+                        
+            
+                <View style={lineStyle}></View>
+
+                <View style={styles.tableHeader}>
+                    <Text style={styles.tableHeaderText}>Valor Total:</Text>
                 </View>
 
                 <Modal
@@ -197,3 +211,22 @@ const estiloExpanded: ViewStyle = {
     opacity: 1,
     
 };
+
+const styles = StyleSheet.create({
+    tableContainer: {
+        flex: 1,
+        marginHorizontal: 5,
+    },
+    tableHeader: {
+
+        flexDirection: 'column',
+        alignContent: 'center',
+
+    },
+    tableHeaderText: {
+        fontSize: 16,
+        textAlign: 'left',
+        fontFamily: 'MuseoModernoRegular',
+        flex: 1,
+    },
+});

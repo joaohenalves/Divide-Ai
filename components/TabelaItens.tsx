@@ -33,7 +33,7 @@ export default function TabelaItens(props: any) {
 
                 <View style={lineStyle}></View>
                 
-                <ScrollView style={{maxHeight: 180}} showsVerticalScrollIndicator={false}>
+                <ScrollView style={{maxHeight: 180, width: '100%'}} showsVerticalScrollIndicator={false}>
                 {props.itens.map((item: any, index: number) => (
                     
                     <Item key={index} item={item} />
@@ -42,15 +42,6 @@ export default function TabelaItens(props: any) {
 
                 <View style={lineStyle}></View>
 
-                <View style={styles.tableHeader}>
-                    <Text style={styles.tableHeaderText}>Participantes:</Text>
-                </View>
-
-                <View style={lineStyle}></View>
-
-                <View style={styles.tableHeader}>
-                    <Text style={styles.tableHeaderText}>Valor Total:</Text>
-                </View>
 
                 <Modal
                     transparent={true}

@@ -3,11 +3,32 @@ import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFetchPartItem } from "@/hooks/useFetchPartItem";
+import axios from "axios";
+import * as config from '@/config';
+
+import { Modal} from "react-native";
 
 export default function Item(props: any) {
 
     const item = props.item;
     const [expanded, setExpanded] = React.useState(false);
+
+    const [confirmarModal, setconfirmarModal] = React.useState(false);
+
+    const excluirParticipante = async (id_usuario: number) => {
+
+        try {
+            const response = await axios.delete('http://' + config.ip + config.port + "/removerpartitem", {
+                params: {id_usuario: id_usuario, 
+                id_item: item.id_item}
+                });
+            triggerRefreshPartItem();
+
+        } catch (e) {
+            console.error('Erro ao fazer a requisição:', e);
+        }
+
+    }
 
     const {participantes, triggerRefreshPartItem} = useFetchPartItem(item.id_item);
 
@@ -26,10 +47,47 @@ export default function Item(props: any) {
 
             </View>
 
+            <Modal
+                    visible={confirmarModal}
+                    transparent={true}
+                    
+                >
+                    <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.8)", alignItems: 'center', justifyContent: "center"}}>
+
+                        <View style={{padding: 10, width: "70%", backgroundColor: 'white', borderRadius: 20, flexDirection: 'column', alignContent: "center", justifyContent: "center" }}>
+                            
+                            <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}}>Tem certeza que deseja finalizar a comanda?</Text>
+                            
+                            <View style={{flexDirection: 'row', width: "100%"}}>
+                                
+                                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                                    <Ionicons name={"checkmark-sharp"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirma()}/>
+                                    <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}} onPress={() => confirma()}>Sim</Text>
+                                </View>
+
+                                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                                    <Ionicons name={"close"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => setconfirmarModal(!confirmarModal)}/>
+                                    <Text style={{fontFamily: 'MuseoModernoSemiBold', margin: 10}} onPress={() => setconfirmarModal(!confirmarModal)}>Cancelar</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+
             {expanded &&
 
                 <View>
                     <Line/>                
+
+                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginHorizontal: 15}}>
+
+                        <Text style={styles.tableRowText} >Inserir novo participante</Text>
+                        <Ionicons name="add" size={18} color={"black"} style={{marginVertical: 5}} />
+
+
+                    </View>
+
+                    <Line/>
 
                     <View style={{justifyContent: "center"}}>
 
@@ -37,7 +95,7 @@ export default function Item(props: any) {
                         <View style={styles.personRow} key={dividendo.id_usuario}>
                             <Text style={styles.tableRowText} >{dividendo.id_usuario}</Text>
                             <Text style={styles.tableRowText} >{dividendo.nome_usuario}</Text>
-                            <Ionicons name="trash-outline" size={18} color={"black"} style={{marginVertical: 5}} />
+                            <Ionicons name="trash-outline" size={18} color={"black"} style={{marginVertical: 5}} onPress={() => excluirParticipante(dividendo.id_usuario)}/>
                         </View>
                         ))}
                 </View>
@@ -72,7 +130,7 @@ const styles = StyleSheet.create({
     },
     personRow: {
         flexDirection: 'row',
-        backgroundColor: 'lightgray',
+        backgroundColor: 'white',
         marginVertical: 5,
         borderRadius: 10,
         paddingHorizontal: 10,

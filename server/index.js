@@ -80,10 +80,10 @@ app.post("/deletarusuario", async (req, res) => {
 
 app.put("/desativarcomanda", async (req, res) => {
     try {
-        const data = parseInt(req.body.id_comanda);
+        const data = req.body.id_comanda;
         console.log(`Mudando o status da comanda id ${data}`);
         await db.none(
-            "UPDATE comanda SET status_comanda = 0 WHERE id = $1;",
+            "UPDATE comanda SET status_comanda = 0 WHERE id_comanda = $1;",
             [data]
         );
         res.sendStatus(201);
@@ -232,8 +232,9 @@ app.post("/validarusuario", async (req, res) => {
         res.sendStatus(400);
     }
 });
+
 app.delete("/removerpartitem", async (req, res) => {
-    const data = req.body;
+    const data = req.query;
     try {
         console.log(`Removendo a pessoa ${data.id_usuario} do item ${data.id_item}`);
         await db.none(
@@ -278,9 +279,9 @@ app.delete("/removerpartcomanda", async (req, res) => {
 });
 app.get("/selecionarparticipantescomanda", async (req, res) =>  {
     try {
-        const data = req.body;
+        const data = req.query;
         console.log(`Recuperando dados dos participantes da comanda ${data.id_comanda}`);
-        const result = await db.all(
+        const result = await db.any(
             "SELECT u.nome_usuario, u.id_usuario FROM usuario u JOIN part_comanda pc ON pc.id_usuario = u.id_usuario WHERE pc.id_comanda = $1;",
             [data.id_comanda]
         );

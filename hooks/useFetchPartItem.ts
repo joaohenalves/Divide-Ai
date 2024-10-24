@@ -16,7 +16,7 @@ export const useFetchPartItem = (item_id: number) => {
         }
       });
       setParticipantes(response.data);
-      console.log('Itens da comanda:', response.data);
+      //console.log('Itens da comanda:', response.data);
     } catch (error) {
       console.error('Erro ao buscar as comandas: ', error);
     }

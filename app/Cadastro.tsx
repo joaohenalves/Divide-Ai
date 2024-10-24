@@ -42,7 +42,7 @@ export default function Cadastro() {
       }
 
       config.currentUser.name = username;
-      router.push({ pathname: '/(main)'});
+      router.push({ pathname: '/login'});
 
     } catch (error) {
       setError('Erro ao cadastrar usuário.');

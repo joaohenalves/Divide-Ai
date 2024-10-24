@@ -9,7 +9,6 @@ import { useFetchComandas } from '@/hooks/useFetchComandas';
 import { useFetchItens } from '@/hooks/useFetchItens';
 import { format, set } from 'date-fns';
 import { Modal} from "react-native";
-import { findFocusedRoute } from '@react-navigation/native';
 
 export default function ComandaExpanded(props: any){
 
@@ -23,6 +22,7 @@ export default function ComandaExpanded(props: any){
     const [alter, setAlter] = React.useState(false);
     const [nome, setNome] = React.useState(comanda.nome_dono);
     const [confirmarModal, setconfirmarModal] = React.useState(false);
+
 
     const confirma: any = () => {
 
@@ -105,6 +105,7 @@ export default function ComandaExpanded(props: any){
                 <Modal
                     visible={confirmarModal}
                     transparent={true}
+                    
                 >
                     <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.8)", alignItems: 'center', justifyContent: "center"}}>
 

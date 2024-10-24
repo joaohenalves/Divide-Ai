@@ -161,10 +161,13 @@ app.post("/cadastraritem", async (req, res) => {
     const data = req.body;
     try {
         console.log("Inserindo na comanda o item", data.nome_item);
-        await db.none(
-            "INSERT INTO item (id_comanda, nome_item, quantidade, preco) VALUES ($1, $2, $3, $4);",
+        const idItem = await db.one(
+            "INSERT INTO item (id_comanda, nome_item, quantidade, preco) VALUES ($1, $2, $3, $4) RETURNING id_item;",
             [data.id_comanda, data.nome_item, data.quantidade, data.preco]
         );
+        await db.none(
+            "INSERT INTO part_item (id_item, id_usuario) VALUES ($1, $2);",
+            [idItem.id_item, data.id_usuario]);
         res.sendStatus(201);
     } catch(error) {
         console.log(error);
@@ -290,11 +293,11 @@ app.get("/selecionarparticipantescomanda", async (req, res) =>  {
 
 app.get("/selecionarparticipantesitem", async (req, res) =>  {
     try {
-        const data = req.body;
+        const data = req.query;
         console.log(`Recuperando dados dos participantes do item ${data.id_item} da comanda ${data.id_comanda}`);
-        const result = await db.all(
+        const result = await db.any(
             "SELECT u.id_usuario, u.nome_usuario FROM usuario u JOIN part_item pi ON pi.id_usuario = u.id_usuario WHERE pi.id_item = $1;",
-            [data.id_comanda]
+            [data.id_item]
         );
         res.status(200).json(result);
     } catch (error) {

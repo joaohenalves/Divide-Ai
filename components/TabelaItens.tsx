@@ -57,11 +57,12 @@ export default function TabelaItens(props: any) {
                     visible={newi}
                     onRequestClose={() => {
                         setNewi(!newi);
+                        props.refreshItems();
                     }}
                     >
                         <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.5)", alignItems: 'center', justifyContent: "center"}}>
 
-                            <NewItem id_comanda={props.id_comanda} setNewi={setNewi} />
+                            <NewItem id_comanda={props.id_comanda} setNewi={setNewi} refreshItems={props.refreshItems}/>
 
                         </View>
 

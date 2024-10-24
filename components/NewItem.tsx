@@ -31,6 +31,12 @@ export default function NewItem(props: any) {
         nome_item: nome,
         quantidade: parseInt(quantidade),
         preco: parseFloat(valor), 
+        id_usuario: config.currentUser.id,
+    }
+
+    function close(){
+        props.setNewi(false);
+        props.refreshItems();
     }
 
     const adicionarItem: any = async () => {
@@ -38,7 +44,7 @@ export default function NewItem(props: any) {
 
           const response = await axios.post('http://' + config.ip + config.port + "/cadastraritem", novoItem);
           props.setNewi(false)
-          props.triggerRefreshItens();
+          props.refreshItems();
     
           showModalTemporarily('Item adicionado com sucesso!');
         } catch (e) {
@@ -58,7 +64,7 @@ export default function NewItem(props: any) {
 
                 <View style={{flexDirection: 'row'}}>
                     <Ionicons name="checkbox" size={22} color={Colors.light.icon} style={{marginHorizontal: 5}}  onPress={() => adicionarItem()}/>
-                    <Ionicons name="close" size={22} color={Colors.light.icon} style={{marginHorizontal: 5}} onPress={() => props.setNewi(false)}/>
+                    <Ionicons name="close" size={22} color={Colors.light.icon} style={{marginHorizontal: 5}} onPress={() => close()}/>
                 </View>
 
             </View>
@@ -82,10 +88,10 @@ export default function NewItem(props: any) {
                     </View>   
 
                     <View style={{margin: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                        <Text style={styles.text}>Valor:   R$</Text>
+                        <Text style={[styles.text, { width: '60%' }]}>Valor:   R$</Text>
                         
                         <TextInput
-                            style={{flex: 1, height: 30, borderRadius: 20, padding: 15, backgroundColor: Colors.light.background}}
+                            style={{width: '100%', height: 30, borderRadius: 20, padding: 15, backgroundColor: Colors.light.background}}
                             placeholder="Valor"
                             placeholderTextColor={Colors.light.faintText}
                             onChangeText={(value) => setValor(value)}
@@ -94,11 +100,11 @@ export default function NewItem(props: any) {
                     </View>   
 
                     <View style={{margin: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                        <Text style={styles.text}>Quantidade:</Text>
+                        <Text style={[styles.text, {width: '50%'}]}>Quantidade:</Text>
                             
                             <TextInput
-                                style={{flex: 1, height: 30, borderRadius: 20, padding: 15, backgroundColor: Colors.light.background}}
-                                placeholder="Valor"
+                                style={{width: '100%', height: 30, borderRadius: 20, padding: 15, backgroundColor: Colors.light.background}}
+                                placeholder="Quantidade"
                                 placeholderTextColor={Colors.light.faintText}
                                 onChangeText={(value) => setQuantidade(value)}
                                 value={quantidade}

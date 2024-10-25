@@ -60,8 +60,8 @@ export default function Item(props: any) {
                 <Text style={styles.tableRowText}>{item.nome_item}</Text>
                 <Text style={styles.tableRowText}>{item.quantidade}</Text>
                 <Text style={styles.tableRowText}>{item.preco}</Text>
-                <Ionicons name="create-outline" size={22} color={Colors.light.icon} style={{marginHorizontal: 5}} />
-
+                <Ionicons name="create-outline" size={22} color={"transparent"} style={{marginHorizontal: 5}} />
+                
                 {expanded ? <Ionicons name="chevron-up" size={22} color={Colors.light.icon} style={{marginHorizontal: 5}} onPress={() => setExpanded(!expanded)} />
                 : <Ionicons name="chevron-down" size={22} color={Colors.light.icon} style={{marginHorizontal: 5}} onPress={() => setExpanded(!expanded)} />
                 }
@@ -74,13 +74,14 @@ export default function Item(props: any) {
                 <View>
                     <Line/>                
 
-                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginHorizontal: 15}}>
+                    {!props.desativada ? <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginHorizontal: 15}}>
 
                         <Text style={styles.tableRowText} >Inserir novo participante</Text>
                         <Ionicons name="add" size={18} color={"black"} style={{marginVertical: 5}} onPress={() => setNovoparticipante(!novoParticipante)}/>
 
 
                     </View>
+                    : null}
 
                     <Line/>
 
@@ -90,7 +91,9 @@ export default function Item(props: any) {
                         <View style={styles.personRow} key={dividendo.id_usuario}>
                             <Text style={styles.tableRowText} >{dividendo.id_usuario}</Text>
                             <Text style={styles.tableRowText} >{dividendo.nome_usuario}</Text>
-                            <Ionicons name="trash-outline" size={18} color={"black"} style={{marginVertical: 5}} onPress={() => excluirParticipante(dividendo.id_usuario)}/>
+                            
+                            {!props.desativada ? <Ionicons name="trash-outline" size={18} color={"black"} style={{marginVertical: 5}} onPress={() => excluirParticipante(dividendo.id_usuario)}/>
+                                : <Ionicons name="trash-outline" size={18} color={"transparent"} style={{marginVertical: 5}} /> }
                         </View>
                         ))}
                 </View>

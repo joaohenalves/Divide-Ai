@@ -4,22 +4,49 @@ import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from "native-base";
 import { useFetchPartComanda } from '@/hooks/useFetchPartComanda';
+import axios from 'axios';
+import * as config from '@/config';
 
 export default function Participante(props: any) {
 
-    const {participantesComanda, triggerRefreshPartComanda} = useFetchPartComanda(parseInt(props.comanda_id));
+    const {participantesComanda, triggerRefreshPartComanda} = useFetchPartComanda(parseInt(props.id_comanda));
     const participantes = participantesComanda;
+
+    const RemoverParticipante = async (user : number) => {
+
+        try {
+
+            await axios.delete('http://' + config.ip + config.port + "/removerpartcomanda", {
+                params: {id_usuario: user, 
+                id_comanda: props.id_comanda}
+            });
+
+            triggerRefreshPartComanda();
+            console.log('Participante removido com sucesso!');
+
+        } catch (e) {
+            console.error('Erro ao remover participação na comanda:', e);
+        }
+
+    }
+
 
     return(
 
         <ScrollView style={{maxHeight: 120}} showsVerticalScrollIndicator={false}>
                         
             {participantes.map((participante: any, index: any) => (
-                <View key={participante.id_usuario} style={styles.tableRow}>
 
-                    <Text style={styles.tableRowText}>{participante.id_usuario}</Text>
-                    <Text style={styles.tableRowText}>{participante.nome_usuario}</Text>
+                <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-evenly'}}>
+                    <View key={participante.id_usuario} style={styles.tableRow}>
 
+                        <Text style={styles.tableRowText}>{participante.nome_usuario}</Text>
+                        <Text style={styles.tableRowText}>ID: {participante.id_usuario}</Text>
+
+                    </View>
+
+                    {!props.desativada ? <Ionicons name="exit-outline" style={{width: "10%", marginHorizontal: 5}}size={22} color={Colors.light.icon} onPress={() => RemoverParticipante(participante.id_usuario)} />
+                        : null}
                 </View>
                 ))
             }
@@ -46,11 +73,10 @@ const styles = StyleSheet.create({
         margin: 5,
         alignContent: 'center',
         justifyContent: 'space-between',
+        width: '90%',
 
     },
     tableRowText: {
-        flex: 1,
-        textAlign: 'left',
         fontSize: 14,
         fontFamily: 'MuseoModernoRegular',
     }

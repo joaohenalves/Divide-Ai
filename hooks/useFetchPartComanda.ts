@@ -16,7 +16,7 @@ export const useFetchPartComanda = (comanda_id: number) => {
         }
       });
       setParticipantes(response.data);
-      console.log('Participantes da comanda:', response.data);
+      //console.log('Participantes da comanda:', response.data);
     } catch (error) {
       console.error('Erro ao buscar as comandas: ', error);
     }

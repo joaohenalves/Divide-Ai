@@ -44,9 +44,11 @@ export default function Index() {
       setSenha('');
     } catch (e) {
       
-      setError(e instanceof Error ? e.message : String(e));
+      setError("Comanda inexistente ou senha incorreta.");
       console.error('Erro ao fazer a requisição:', e);
-      showModalTemporarily('Erro ao criar comanda!');
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }
   };
 
@@ -77,7 +79,7 @@ export default function Index() {
 
               <View style={{flexDirection:'column', width: "100%"}}>
                 <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', fontSize: 20, alignSelf: "flex-start",}}>ID da comanda:</Text>
-                <View style={{height: 1, width: '13%', backgroundColor: Colors.light.contrast_backgroud, alignSelf: "flex-start"}}></View>
+                <View style={{height: 1, width: '35%', backgroundColor: Colors.light.contrast_backgroud, alignSelf: "flex-start"}}></View>
 
                 <TextInput
                       style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}

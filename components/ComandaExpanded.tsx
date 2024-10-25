@@ -1,5 +1,5 @@
 import { Colors } from '../constants/Colors';
-import { View, ViewStyle, Text } from 'react-native';
+import { View, ViewStyle, Text, TouchableHighlightBase } from 'react-native';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import TabelaItens from './TabelaItens';
@@ -14,8 +14,8 @@ import Participante from './Participante';
 
 export default function ComandaExpanded(props: any){
 
+    const desativada = !props.ac
     const comanda = props.comanda;
-    const { triggerRefresh } = useFetchComandas();
 
     const {itens , triggerRefreshItens} = useFetchItens(comanda.id_comanda);
 
@@ -28,7 +28,7 @@ export default function ComandaExpanded(props: any){
 
     const confirma: any = () => {
 
-        finalizar(nome, comanda.id);
+        finalizar(nome, comanda.id_comanda);
         setconfirmarModal(false);
         props.close(false);
     }
@@ -41,12 +41,13 @@ export default function ComandaExpanded(props: any){
 
       try {
 
+        //console.log("ID: ", id);
         const response = await axios.put('http://' + config.ip + config.port + "/desativarcomanda", {
             id_comanda: id
         });
         comanda.status_comanda = 0;
-        console.log('Resposta do servidor:', response.data);
-        triggerRefresh();
+        
+        props.triggerRefresh();
 
         //showModalTemporarily('Comanda criada com sucesso!');
       } catch (e) {
@@ -71,8 +72,8 @@ export default function ComandaExpanded(props: any){
                         {//<Ionicons name={"create"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10, zIndex: 100}} onPress={() => setAlter(!alter)}/>
                         }
 
-                        <Ionicons name={"trash"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirmar_finaliza()}/> 
-                                    
+                        {!desativada ? <Ionicons name={"trash"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirmar_finaliza()}/> 
+                         : null}           
                     </View>
 
                 </View>
@@ -96,24 +97,30 @@ export default function ComandaExpanded(props: any){
 
                 <Line />
 
-                <View style={{width: "100%"}}>
+                <View style={styles.tableHeader}>
+                    <Text style={[styles.tableHeaderText, {marginTop: 0}]}>Itens:</Text>
                     
-                    <TabelaItens itens={itens} id_comanda={comanda.id_comanda} id_dono={comanda.id_dono} refreshItems={triggerRefreshItens}/>
+                    <TabelaItens desativada={desativada} itens={itens} id_comanda={comanda.id_comanda} id_dono={comanda.id_dono} refreshItems={triggerRefreshItens}/>
 
                 </View>
 
                 <View style={styles.tableHeader}>
                     <Text style={styles.tableHeaderText}>Participantes:</Text>
 
-                    <Participante comanda_id={comanda.id_comanda}/>
+                    <Participante id_comanda={comanda.id_comanda} desativada={desativada}/>
                 </View>
                         
             
-                <View style={lineStyle}></View>
+                <Line />
 
+            {!desativada ? 
                 <View style={styles.tableHeader}>
                     <Text style={styles.tableHeaderText}>Valor Total:</Text>
                 </View>
+            :   <View style={styles.tableHeader}>
+                    <Text style={styles.tableHeaderText}>Valor Final:</Text>
+                </View>
+        }
 
                 <Modal
                     visible={confirmarModal}
@@ -220,12 +227,13 @@ const styles = StyleSheet.create({
 
         flexDirection: 'column',
         alignContent: 'center',
+        width: "100%",
 
     },
     tableHeaderText: {
         fontSize: 16,
-        textAlign: 'left',
+        textAlign: 'center',
         fontFamily: 'MuseoModernoRegular',
-        flex: 1,
+        marginVertical: 5,
     },
 });

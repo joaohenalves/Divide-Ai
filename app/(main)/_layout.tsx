@@ -6,10 +6,13 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+
+  const router = useRouter();
 
   const [backgroundColor, setBackgroundColor] = React.useState(Colors[colorScheme ?? 'light'].background);
   const user = config.currentUser.name;
@@ -36,7 +39,7 @@ export default function TabLayout() {
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={Colors.light.icon} size={35}/>
           ),
           header(props) {
-            return <Header user={user} tela={"Tela de controle (comandas ativas)"} {...props} />;
+            return <Header router={router} user={user} tela={"Tela de controle (comandas ativas)"} {...props} />;
           },
         }}
         listeners={{
@@ -71,7 +74,7 @@ export default function TabLayout() {
             <TabBarIcon name={focused ? 'time' : 'time-outline'} color={Colors.light.icon} size={35}/>
           ),
           header(props) {
-            return <Header user={user} tela={"Histórico de comandas"} {...props} />;
+            return <Header router={router} user={user} tela={"Histórico de comandas"} {...props} />;
           },
         }}
         listeners={{

@@ -77,11 +77,9 @@ const Line = () => {
 const Comanda = (props : any) => {
 
     const comanda = props.comanda;
-    console.log(comanda)
+    //console.log(comanda)
 
     const [expanded, setExpanded] = React.useState(false);
-
-    const { triggerRefresh } = useFetchComandas();
 
 
     const dataFormatada = format(new Date(comanda.data_hora), 'dd/MM/yyyy HH:mm');
@@ -121,12 +119,12 @@ const Comanda = (props : any) => {
               visible={expanded}
               onRequestClose={() => {
                 setExpanded(!expanded)
-                triggerRefresh();
+                props.triggerRefresh();
               }}
             >
                 <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.5)", alignItems: 'center', justifyContent: "center"}}>
 
-                  <ComandaExpanded comanda={comanda} close={setExpanded}/>
+                  <ComandaExpanded ac={props.ac} comanda={comanda} close={setExpanded} triggerRefresh={props.triggerRefresh}/>
 
                 </View>
 

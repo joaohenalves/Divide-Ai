@@ -8,7 +8,7 @@ import { Modal} from "react-native";
 import NewItem from './NewItem';
 
 const lineStyle: ViewStyle = {
-    height: 2,
+    height: 1,
     width: '100%',
     backgroundColor: '#1F1300',
     marginVertical:1,
@@ -19,26 +19,38 @@ const lineStyle: ViewStyle = {
 
 export default function TabelaItens(props: any) {
 
+    const itensEmpty = props.itens.length === 0;
     const [newi, setNewi] = React.useState(false);
 
         return (
             <View style={styles.tableContainer}>
-                <View style={styles.tableHeader}>
-                    <Text style={styles.tableHeaderText}>Item</Text>
-                    <Text style={styles.tableHeaderText}>Qtd.</Text>
-                    <Text style={styles.tableHeaderText}>Valor</Text>
-                    <Ionicons name="trash" size={22} color="transparent" style={{marginHorizontal: 5}}/>
-                    <Ionicons name="add" size={25} color={Colors.light.icon} style={{marginHorizontal: 10, backgroundColor: 'white', borderRadius: 10}} onPress={() => setNewi(!newi)} />
-                </View>
+                {!itensEmpty ? <View>
+                    <View style={styles.tableHeader}>
+                        <Text style={styles.tableHeaderText}>Item</Text>
+                        <Text style={styles.tableHeaderText}>Qtd.</Text>
+                        <Text style={styles.tableHeaderText}>Valor</Text>
+                        <Ionicons name="trash" size={22} color="transparent" style={{marginHorizontal: 5}}/>
+                        {!props.desativada ? <Ionicons name="add" size={25} color={Colors.light.icon} style={{marginHorizontal: 10, backgroundColor: 'white', borderRadius: 100}} onPress={() => setNewi(!newi)} />
+                            : <Ionicons name="trash" size={22} color="transparent" style={{marginHorizontal: 5}}/>}
+                    </View>
 
-                <View style={lineStyle}></View>
-                
-                <ScrollView style={{maxHeight: 180, width: '100%'}} showsVerticalScrollIndicator={false}>
-                {props.itens.map((item: any, index: number) => (
+                    <View style={lineStyle}></View>
                     
-                    <Item key={index} item={item} id_comanda={props.id_comanda} />
-                ))}
-                </ScrollView>
+                    <ScrollView style={{maxHeight: 180, width: '100%'}} showsVerticalScrollIndicator={false}>
+                        {props.itens.map((item: any, index: number) => (
+                            
+                            <Item desativada={props.desativada} key={index} item={item} id_comanda={props.id_comanda} />
+                        ))}
+                    </ScrollView>
+                </View>
+                : 
+                    <View>
+                        <Text style={{color: Colors.light.faintText, alignSelf: 'center' ,fontFamily: 'MuseoModernoRegular', fontSize: 14, margin: 5, marginTop: 0}}>Nenhum item adicionado</Text>
+
+                        {!props.desativada ? <Text style={{color: Colors.light.text, alignSelf: 'center' ,fontFamily: 'MuseoModernoRegular', fontSize: 14, backgroundColor: 'white', paddingHorizontal: 15, borderRadius: 10, marginBottom: 10}} onPress={() => setNewi(!newi)}>Inserir Primeiro Item </Text>
+                        : null }
+                    </View>
+                }      
 
                 <View style={lineStyle}></View>
 

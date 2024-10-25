@@ -70,6 +70,14 @@ export function NovaComandaBox() {
 
   const [error, setError] = useState('');
 
+  const validar_e_cadastrar = () => {
+    if (titulo === '') {
+      setError('Título não pode ser vazio!');
+    } else {
+      cadastrar_comanda();
+    }
+  }
+
   const cadastrar_comanda: any = async () => {
     try {
       const response = await axios.post('http://' + config.ip + config.port + "/cadastrarcomanda", {
@@ -123,7 +131,7 @@ export function NovaComandaBox() {
 
                 <TextInput
                       style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}
-                      placeholder="Senha"
+                      placeholder="Opcional"
                       placeholderTextColor={Colors.light.faintText}
                       onChangeText={(value) => setSenha(value)}
                       value={senha}
@@ -137,7 +145,7 @@ export function NovaComandaBox() {
 
             <View style={{height: 1, width: '100%', backgroundColor: '#F3F3F3'}}></View>
             {error ? <Text style={{color: 'red', marginTop: 3}}>{error}</Text> : null}
-            <CustomButton style={styles} onPress={cadastrar_comanda} title="Criar comanda" />
+            <CustomButton style={styles} onPress={validar_e_cadastrar} title="Criar comanda" />
 
 
           </View>

@@ -29,7 +29,7 @@ export default function Index() {
           flexDirection: "column"
         }}
       >
-        <ComandaBox comandas={comandas} active={1}/>
+        <ComandaBox comandas={comandas} active={1} triggerRefresh={triggerRefresh}/>
       </View>
     </GestureHandlerRootView>
   );

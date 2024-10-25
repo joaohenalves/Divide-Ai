@@ -1,19 +1,42 @@
 import { Colors } from "../constants/Colors";
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, Touchable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFetchPartItem } from "@/hooks/useFetchPartItem";
 import axios from "axios";
 import * as config from '@/config';
-
+import { useFetchPartComanda } from "@/hooks/useFetchPartComanda";
 import { Modal} from "react-native";
+import { ScrollView } from "native-base";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Item(props: any) {
 
     const item = props.item;
     const [expanded, setExpanded] = React.useState(false);
 
-    const [confirmarModal, setconfirmarModal] = React.useState(false);
+    const [novoParticipante, setNovoparticipante] = React.useState(false);
+
+    const {participantes, triggerRefreshPartItem} = useFetchPartItem(item.id_item);
+    const {participantesComanda, triggerRefreshPartComanda} = useFetchPartComanda(parseInt(props.id_comanda));
+    
+    const possiveisParticipantes = participantesComanda.filter((participante: any) => !participantes.some((part: any) => part.id_usuario === participante.id_usuario));
+
+    const inserirParticipacaoItem = async (id_usuario: number) => {
+
+        try {
+            const response = await axios.post('http://' + config.ip + config.port + "/cadastrarpartitem", {
+                id_usuario: id_usuario, 
+                id_item: item.id_item
+            });
+            triggerRefreshPartItem();
+            setNovoparticipante(!novoParticipante);
+
+        } catch (e) {
+            console.error('Erro ao fazer o cadastro de patrticipação no item:', e);
+        }
+
+    }
 
     const excluirParticipante = async (id_usuario: number) => {
 
@@ -30,8 +53,6 @@ export default function Item(props: any) {
 
     }
 
-    const {participantes, triggerRefreshPartItem} = useFetchPartItem(item.id_item);
-
     return(
 
         <View style={styles.fullitem}>
@@ -47,32 +68,6 @@ export default function Item(props: any) {
 
             </View>
 
-            <Modal
-                    visible={confirmarModal}
-                    transparent={true}
-                    
-                >
-                    <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.8)", alignItems: 'center', justifyContent: "center"}}>
-
-                        <View style={{padding: 10, width: "70%", backgroundColor: 'white', borderRadius: 20, flexDirection: 'column', alignContent: "center", justifyContent: "center" }}>
-                            
-                            <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}}>Tem certeza que deseja finalizar a comanda?</Text>
-                            
-                            <View style={{flexDirection: 'row', width: "100%"}}>
-                                
-                                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
-                                    <Ionicons name={"checkmark-sharp"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirma()}/>
-                                    <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}} onPress={() => confirma()}>Sim</Text>
-                                </View>
-
-                                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
-                                    <Ionicons name={"close"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => setconfirmarModal(!confirmarModal)}/>
-                                    <Text style={{fontFamily: 'MuseoModernoSemiBold', margin: 10}} onPress={() => setconfirmarModal(!confirmarModal)}>Cancelar</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
 
             {expanded &&
 
@@ -82,7 +77,7 @@ export default function Item(props: any) {
                     <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginHorizontal: 15}}>
 
                         <Text style={styles.tableRowText} >Inserir novo participante</Text>
-                        <Ionicons name="add" size={18} color={"black"} style={{marginVertical: 5}} />
+                        <Ionicons name="add" size={18} color={"black"} style={{marginVertical: 5}} onPress={() => setNovoparticipante(!novoParticipante)}/>
 
 
                     </View>
@@ -99,6 +94,38 @@ export default function Item(props: any) {
                         </View>
                         ))}
                 </View>
+
+                <Modal
+                    visible={novoParticipante}
+                    transparent={true}
+                    onRequestClose={() => setNovoparticipante(!novoParticipante)}
+                    
+                >
+                    <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.8)", alignItems: 'center', justifyContent: "center"}}>
+
+                        <View style={{padding: 10, width: "70%", backgroundColor: 'white', borderRadius: 20, flexDirection: 'column', alignContent: "center", justifyContent: "center" }}>
+                            
+                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                                <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}}>Selecione o novo participante</Text>
+                                <Ionicons name="close" size={22} color={Colors.light.icon} style={{marginHorizontal: 10}}onPress={() => setNovoparticipante(!novoParticipante)} />
+                            </View>
+                            
+                            <ScrollView style={{maxHeight: 120}} showsVerticalScrollIndicator={false}>
+                        
+                                {possiveisParticipantes.map((participante: any, index: any) => (
+                                    <TouchableOpacity key={participante.id_usuario} style={styles.tableRow} onPress={() => inserirParticipacaoItem(participante.id_usuario)}>
+
+                                        <Text style={styles.tableRowText}>{participante.id_usuario}</Text>
+                                        <Text style={styles.tableRowText}>{participante.nome_usuario}</Text>
+
+                                    </TouchableOpacity>
+                                    ))
+                                }
+                            </ScrollView>
+                            
+                        </View>
+                    </View>
+                </Modal>
 
                 </View>
             }

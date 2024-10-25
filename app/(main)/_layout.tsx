@@ -22,7 +22,7 @@ export default function TabLayout() {
           tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
           tabBarShowLabel: false,
           tabBarStyle: {
-            height: 50
+            height: 100
           },
     
         }}>
@@ -32,8 +32,8 @@ export default function TabLayout() {
           options={{
           headerShown: true,
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} size={35}/>
+          tabBarIcon: ({focused }) => (
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={Colors.light.icon} size={35}/>
           ),
           header(props) {
             return <Header user={user} tela={"Tela de controle (comandas ativas)"} {...props} />;
@@ -52,7 +52,7 @@ export default function TabLayout() {
           headerShown: false,
           title: 'Nova Comanda',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'add-circle' : 'add-circle-outline'} color={color} size={35}/>
+            <TabBarIcon name={focused ? 'add-circle' : 'add-circle-outline'} color={Colors.light.icon} size={35}/>
           )
         }}
         listeners={{
@@ -68,7 +68,7 @@ export default function TabLayout() {
           headerShown: true,
           title: 'Histórico',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'time' : 'time-outline'} color={color} size={35}/>
+            <TabBarIcon name={focused ? 'time' : 'time-outline'} color={Colors.light.icon} size={35}/>
           ),
           header(props) {
             return <Header user={user} tela={"Histórico de comandas"} {...props} />;
@@ -77,6 +77,22 @@ export default function TabLayout() {
         listeners={{
           tabPress: (e) => {
             setBackgroundColor(Colors[colorScheme ?? 'light'].background);
+        },
+          }}
+        />
+        <Tabs.Screen
+          name="ParticiparComanda"
+          key={2}
+          options={{
+          headerShown: false,
+          title: 'Entrar em Comanda',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'log-in' : 'log-in-outline'} color={Colors.light.icon} size={35}/>
+          )
+        }}
+        listeners={{
+          tabPress: (e) => {
+            setBackgroundColor(Colors.light.contrast_backgroud);
         },
           }}
         />

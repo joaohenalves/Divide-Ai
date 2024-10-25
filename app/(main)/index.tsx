@@ -4,6 +4,7 @@ import React from "react";
 import { View} from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
 import { useFetchComandas } from "@/hooks/useFetchComandas";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Index() {
 
@@ -18,6 +19,7 @@ export default function Index() {
   );
 
   return (
+    <GestureHandlerRootView>
       <View
         style={{
           flex: 1,
@@ -27,7 +29,8 @@ export default function Index() {
           flexDirection: "column"
         }}
       >
-      <ComandaBox comandas={comandas} active={1}/>
+        <ComandaBox comandas={comandas} active={1}/>
       </View>
+    </GestureHandlerRootView>
   );
 }

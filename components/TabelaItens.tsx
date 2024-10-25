@@ -36,7 +36,7 @@ export default function TabelaItens(props: any) {
                 <ScrollView style={{maxHeight: 180, width: '100%'}} showsVerticalScrollIndicator={false}>
                 {props.itens.map((item: any, index: number) => (
                     
-                    <Item key={index} item={item} />
+                    <Item key={index} item={item} id_comanda={props.id_comanda} />
                 ))}
                 </ScrollView>
 

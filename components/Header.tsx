@@ -57,9 +57,9 @@ export function Header( props : any) {
           </View>  
             <Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>{txt}</Text>
             <Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>By:</Text>
-            <a style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }} href='https://github.com/LuizHRF'>Luiz Faccio</a>
-            <a style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }} href='https://github.com/joaohenalves'>João Henrique Alves dos Santos</a>
-            <a style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }} href='https://github.com/marcobalestrin'>Marco Antônio Balestrin</a>
+            <a  href='https://github.com/LuizHRF'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>Luiz Faccio</Text></a>
+            <a  href='https://github.com/marcobalestrin'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>Marco Antônio Balestrin</Text></a>
+            <a href='https://github.com/joaohenalves'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>João Henrique Alves dos Santos</Text></a>
           </View>
       </Modal>
 

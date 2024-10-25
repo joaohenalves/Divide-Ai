@@ -124,9 +124,8 @@ app.get("/selecionarcomandas", async (req, res) => {
         const id_usuario = req.query.id_usuario;
         console.log(`Recuperando dados da(s) comanda(s) do dono ${id_usuario}`);
         const result = await db.any(
-            "SELECT c.*, u.nome_usuario as nome_dono FROM comanda c JOIN usuario u ON c.id_dono= u.id_usuario WHERE id_dono = $1;",
-            [id_usuario]
-        );
+            "SELECT c.*, u.nome_usuario as nome_dono FROM comanda c JOIN usuario u ON c.id_dono= u.id_usuario WHERE id_dono = $1 UNION SELECT c.*, u.nome_usuario as nome_dono FROM comanda c JOIN usuario u ON c.id_dono=u.id_usuario WHERE id_comanda IN ( SELECT id_comanda FROM part_comanda WHERE id_usuario = $1);"
+        , [id_usuario]);
         res.status(200).json(result);
     } catch (error) {
         console.log(error);

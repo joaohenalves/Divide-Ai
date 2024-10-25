@@ -108,7 +108,7 @@ export function NovaComandaBox() {
 
                 <TextInput
                       style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}
-                      placeholder="Sem título por enquanto"
+                      placeholder="Título"
                       placeholderTextColor={Colors.light.faintText}
                       onChangeText={(value) => setTitulo(value)}
                       value={titulo}
@@ -123,7 +123,7 @@ export function NovaComandaBox() {
 
                 <TextInput
                       style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}
-                      placeholder="Sem senha por enquanto"
+                      placeholder="Senha"
                       placeholderTextColor={Colors.light.faintText}
                       onChangeText={(value) => setSenha(value)}
                       value={senha}

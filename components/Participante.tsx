@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from "native-base";
-import { useFetchPartComanda } from '@/hooks/useFetchPartCOmanda';
+import { useFetchPartComanda } from '@/hooks/useFetchPartComanda';
 
 export default function Participante(props: any) {
 

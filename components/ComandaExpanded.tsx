@@ -11,7 +11,6 @@ import { format, set } from 'date-fns';
 import { Modal} from "react-native";
 import { StyleSheet } from 'react-native';
 import Participante from './Participante';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export default function ComandaExpanded(props: any){
 
@@ -200,7 +199,7 @@ const estiloExpanded: ViewStyle = {
     marginVertical: 5,
   
     width: '80%',
-    maxHeight: '90%',
+    maxHeight: '80%',
     flex: 1,
   
     padding: 15,

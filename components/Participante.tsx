@@ -45,7 +45,7 @@ export default function Participante(props: any) {
 
                     </View>
 
-                    {!props.desativada ? <Ionicons name="exit-outline" style={{width: "10%", marginHorizontal: 5}}size={22} color={Colors.light.icon} onPress={() => RemoverParticipante(participante.id_usuario)} />
+                    {!props.desativada ? <Ionicons name="person-remove-outline" style={{width: "10%", marginHorizontal: 5}}size={25} color={Colors.light.icon} onPress={() => RemoverParticipante(participante.id_usuario)} />
                         : null}
                 </View>
                 ))
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         margin: 5,
         alignContent: 'center',
         justifyContent: 'space-between',
-        width: '90%',
+        width: '85%',
 
     },
     tableRowText: {

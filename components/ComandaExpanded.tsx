@@ -11,6 +11,7 @@ import { format, set } from 'date-fns';
 import { Modal} from "react-native";
 import { StyleSheet } from 'react-native';
 import Participante from './Participante';
+import { ScrollView } from 'native-base';
 
 export default function ComandaExpanded(props: any){
 
@@ -24,7 +25,6 @@ export default function ComandaExpanded(props: any){
     const [alter, setAlter] = React.useState(false);
     const [nome, setNome] = React.useState(comanda.nome_dono);
     const [confirmarModal, setconfirmarModal] = React.useState(false);
-
 
     const confirma: any = () => {
 
@@ -80,74 +80,85 @@ export default function ComandaExpanded(props: any){
                     
                 <Line />
 
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={estiloExtra.campos}>Título:</Text>
-                    <Text style={estiloExtra.texto}>{comanda.nome_comanda}</Text>
-                </View>
-            
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={estiloExtra.campos}>Proprietário:</Text>
-                    <Text style={estiloExtra.texto}>{comanda.nome_dono}</Text>
-                </View>
-            
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={estiloExtra.campos}>Data de criação: </Text>
-                    <Text style={estiloExtra.texto}>{dataFormatada}</Text>
-                </View>
+                <ScrollView showsVerticalScrollIndicator={false} style={{width: '100%'}}>
 
-                <Line />
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={estiloExtra.campos}>Título:</Text>
+                        <Text style={estiloExtra.texto}>{comanda.nome_comanda}</Text>
+                    </View>
 
-                <View style={styles.tableHeader}>
-                    <Text style={[styles.tableHeaderText, {marginTop: 0}]}>Itens:</Text>
-                    
-                    <TabelaItens desativada={desativada} itens={itens} id_comanda={comanda.id_comanda} id_dono={comanda.id_dono} refreshItems={triggerRefreshItens}/>
+                    {comanda.senha_comanda ? 
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={estiloExtra.campos}>Senha:</Text>
+                            <Text style={estiloExtra.texto}>{comanda.senha_comanda}</Text>
+                        </View>
+                    : null}
+                
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={estiloExtra.campos}>Proprietário:</Text>
+                        <Text style={estiloExtra.texto}>{comanda.nome_dono}</Text>
+                    </View>
+                
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={estiloExtra.campos}>Data de criação: </Text>
+                        <Text style={estiloExtra.texto}>{dataFormatada}</Text>
+                    </View>
 
-                </View>
+                    <Line />
 
-                <View style={styles.tableHeader}>
-                    <Text style={styles.tableHeaderText}>Participantes:</Text>
-
-                    <Participante id_comanda={comanda.id_comanda} desativada={desativada}/>
-                </View>
+                    <View style={styles.tableHeader}>
+                        <Text style={[styles.tableHeaderText, {marginTop: 0}]}>Itens:</Text>
                         
-            
-                <Line />
+                        <TabelaItens desativada={desativada} itens={itens} id_comanda={comanda.id_comanda} id_dono={comanda.id_dono} refreshItems={triggerRefreshItens}/>
 
-            {!desativada ? 
-                <View style={styles.tableHeader}>
-                    <Text style={styles.tableHeaderText}>Valor Total:</Text>
-                </View>
-            :   <View style={styles.tableHeader}>
-                    <Text style={styles.tableHeaderText}>Valor Final:</Text>
-                </View>
-        }
+                    </View>
 
-                <Modal
-                    visible={confirmarModal}
-                    transparent={true}
-                    
-                >
-                    <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.8)", alignItems: 'center', justifyContent: "center"}}>
+                    <View style={styles.tableHeader}>
+                        <Text style={styles.tableHeaderText}>Participantes:</Text>
 
-                        <View style={{padding: 10, width: "70%", backgroundColor: 'white', borderRadius: 20, flexDirection: 'column', alignContent: "center", justifyContent: "center" }}>
+                        <Participante id_comanda={comanda.id_comanda} desativada={desativada}/>
+                    </View>
                             
-                            <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}}>Tem certeza que deseja finalizar a comanda?</Text>
-                            
-                            <View style={{flexDirection: 'row', width: "100%"}}>
+                
+                    <Line />
+
+                {!desativada ? 
+                    <View style={styles.tableHeader}>
+                        <Text style={styles.tableHeaderText}>Valor Total:</Text>
+                    </View>
+                :   <View style={styles.tableHeader}>
+                        <Text style={styles.tableHeaderText}>Valor Final:</Text>
+                    </View>
+            }
+
+                    <Modal
+                        visible={confirmarModal}
+                        transparent={true}
+                        
+                    >
+                        <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.8)", alignItems: 'center', justifyContent: "center"}}>
+
+                            <View style={{padding: 10, width: "70%", backgroundColor: 'white', borderRadius: 20, flexDirection: 'column', alignContent: "center", justifyContent: "center" }}>
                                 
-                                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
-                                    <Ionicons name={"checkmark-sharp"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirma()}/>
-                                    <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}} onPress={() => confirma()}>Sim</Text>
-                                </View>
+                                <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}}>Tem certeza que deseja finalizar a comanda?</Text>
+                                
+                                <View style={{flexDirection: 'row', width: "100%"}}>
+                                    
+                                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                                        <Ionicons name={"checkmark-sharp"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirma()}/>
+                                        <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}} onPress={() => confirma()}>Sim</Text>
+                                    </View>
 
-                                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
-                                    <Ionicons name={"close"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => setconfirmarModal(!confirmarModal)}/>
-                                    <Text style={{fontFamily: 'MuseoModernoSemiBold', margin: 10}} onPress={() => setconfirmarModal(!confirmarModal)}>Cancelar</Text>
+                                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                                        <Ionicons name={"close"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => setconfirmarModal(!confirmarModal)}/>
+                                        <Text style={{fontFamily: 'MuseoModernoSemiBold', margin: 10}} onPress={() => setconfirmarModal(!confirmarModal)}>Cancelar</Text>
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
-                </Modal>
+                    </Modal>
+
+                </ScrollView>
 
             </View>
     )

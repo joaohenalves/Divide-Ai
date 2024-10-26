@@ -53,6 +53,21 @@ export default function Item(props: any) {
 
     }
 
+    const removerItem = async () => {
+            
+            try {
+
+                await axios.delete('http://' + config.ip + config.port + "/deletaritem", {
+                    params: {id_item: item.id_item}
+                });
+
+                props.refreshItems();
+    
+            } catch (e) {
+                console.error('Erro ao fazer a requisição:', e);
+            }
+    }
+
     return(
 
         <View style={styles.fullitem}>
@@ -60,8 +75,7 @@ export default function Item(props: any) {
                 <Text style={styles.tableRowText}>{item.nome_item}</Text>
                 <Text style={styles.tableRowText}>{item.quantidade}</Text>
                 <Text style={styles.tableRowText}>{item.preco}</Text>
-                <Ionicons name="create-outline" size={22} color={"transparent"} style={{marginHorizontal: 5}} />
-                
+                 
                 {expanded ? <Ionicons name="chevron-up" size={22} color={Colors.light.icon} style={{marginHorizontal: 5}} onPress={() => setExpanded(!expanded)} />
                 : <Ionicons name="chevron-down" size={22} color={Colors.light.icon} style={{marginHorizontal: 5}} onPress={() => setExpanded(!expanded)} />
                 }
@@ -74,11 +88,17 @@ export default function Item(props: any) {
                 <View>
                     <Line/>                
 
-                    {!props.desativada ? <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginHorizontal: 15}}>
+                    {!props.desativada ? <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: 15}}>
 
-                        <Text style={styles.tableRowText} >Inserir novo participante</Text>
-                        <Ionicons name="add" size={18} color={"black"} style={{marginVertical: 5}} onPress={() => setNovoparticipante(!novoParticipante)}/>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Ionicons name="add" size={18} color={"black"} style={{margin: 5}} onPress={() => setNovoparticipante(!novoParticipante)}/>
+                            <Text style={[styles.tableRowText, {fontSize: 11}]} onPress={() => setNovoparticipante(!novoParticipante)}>Inserir novo participante</Text>
+                        </View>
 
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Ionicons name="trash-outline" size={18} color={"black"} style={{margin: 5}} onPress={() => removerItem()}/>
+                            <Text style={[styles.tableRowText, {fontSize: 11}]} onPress={() => removerItem()}>Remover Item</Text>
+                        </View>
 
                     </View>
                     : null}
@@ -92,8 +112,8 @@ export default function Item(props: any) {
                             <Text style={styles.tableRowText} >{dividendo.id_usuario}</Text>
                             <Text style={styles.tableRowText} >{dividendo.nome_usuario}</Text>
                             
-                            {!props.desativada ? <Ionicons name="trash-outline" size={18} color={"black"} style={{marginVertical: 5}} onPress={() => excluirParticipante(dividendo.id_usuario)}/>
-                                : <Ionicons name="trash-outline" size={18} color={"transparent"} style={{marginVertical: 5}} /> }
+                            {!props.desativada ? <Ionicons name="remove-circle-outline" size={18} color={"black"} style={{marginVertical: 5}} onPress={() => excluirParticipante(dividendo.id_usuario)}/>
+                                : <Ionicons name="remove-circle-outline" size={18} color={"transparent"} style={{marginVertical: 5}} /> }
                         </View>
                         ))}
                 </View>
@@ -113,19 +133,20 @@ export default function Item(props: any) {
                                 <Ionicons name="close" size={22} color={Colors.light.icon} style={{marginHorizontal: 10}}onPress={() => setNovoparticipante(!novoParticipante)} />
                             </View>
                             
-                            <ScrollView style={{maxHeight: 120}} showsVerticalScrollIndicator={false}>
-                        
-                                {possiveisParticipantes.map((participante: any, index: any) => (
-                                    <TouchableOpacity key={participante.id_usuario} style={styles.tableRow} onPress={() => inserirParticipacaoItem(participante.id_usuario)}>
-
-                                        <Text style={styles.tableRowText}>{participante.id_usuario}</Text>
-                                        <Text style={styles.tableRowText}>{participante.nome_usuario}</Text>
-
-                                    </TouchableOpacity>
-                                    ))
-                                }
-                            </ScrollView>
+                            {possiveisParticipantes.length > 0 ?
+                                <ScrollView style={{maxHeight: 120}} showsVerticalScrollIndicator={false}>
                             
+                                    {possiveisParticipantes.map((participante: any, index: any) => (
+                                        <TouchableOpacity key={participante.id_usuario} style={styles.tableRow} onPress={() => inserirParticipacaoItem(participante.id_usuario)}>
+
+                                            <Text style={styles.tableRowText}>{participante.id_usuario}</Text>
+                                            <Text style={styles.tableRowText}>{participante.nome_usuario}</Text>
+
+                                        </TouchableOpacity>
+                                        ))
+                                    }
+                                </ScrollView>
+                            : <Text style={{color: Colors.light.faintText, alignSelf: 'center' ,fontFamily: 'MuseoModernoRegular', fontSize: 14, margin: 5, marginTop: 0}}>Nenhum participante disponível</Text>}
                         </View>
                     </View>
                 </Modal>

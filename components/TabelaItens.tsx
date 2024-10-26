@@ -29,8 +29,8 @@ export default function TabelaItens(props: any) {
                         <Text style={styles.tableHeaderText}>Item</Text>
                         <Text style={styles.tableHeaderText}>Qtd.</Text>
                         <Text style={styles.tableHeaderText}>Valor</Text>
-                        <Ionicons name="trash" size={22} color="transparent" style={{marginHorizontal: 5}}/>
-                        {!props.desativada ? <Ionicons name="add" size={25} color={Colors.light.icon} style={{marginHorizontal: 10, backgroundColor: 'white', borderRadius: 100}} onPress={() => setNewi(!newi)} />
+                        
+                        {!props.desativada ? <Ionicons name="add-circle-outline" size={25} color={Colors.light.icon} style={{marginHorizontal: 10}} onPress={() => setNewi(!newi)} />
                             : <Ionicons name="trash" size={22} color="transparent" style={{marginHorizontal: 5}}/>}
                     </View>
 
@@ -39,7 +39,7 @@ export default function TabelaItens(props: any) {
                     <ScrollView style={{maxHeight: 180, width: '100%'}} showsVerticalScrollIndicator={false}>
                         {props.itens.map((item: any, index: number) => (
                             
-                            <Item desativada={props.desativada} key={index} item={item} id_comanda={props.id_comanda} />
+                            <Item desativada={props.desativada} key={index} item={item} id_comanda={props.id_comanda} refreshItems={props.refreshItems}/>
                         ))}
                     </ScrollView>
                 </View>

@@ -197,10 +197,10 @@ app.post("/atualizaritem", async (req, res) => {
     }
 });
 
-app.post("/deletaritem", async (req, res) => {
-    const data = req.body;
+app.delete("/deletaritem", async (req, res) => {
+    const data = req.query;
     try {
-        console.log("Deletando na comanda o item", data.nome_item);
+        console.log("Deletando na comanda o item", data.id_item);
         await db.none(
             "DELETE FROM item WHERE id_item=$1;",
             [data.id_item]

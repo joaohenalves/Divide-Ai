@@ -4,6 +4,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Modal} from "react-native";
+import { Link } from '@react-navigation/native';
 import * as Config from '../config';
 
 const estilo: ViewStyle = {
@@ -68,16 +69,16 @@ export function Header( props : any) {
           </View>  
             <Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>{txt}</Text>
             <Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>By:</Text>
-            <a  href='https://github.com/LuizHRF'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>Luiz Faccio</Text></a>
-            <a  href='https://github.com/marcobalestrin'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>Marco Antônio Balestrin</Text></a>
-            <a href='https://github.com/joaohenalves'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>João Henrique Alves dos Santos</Text></a>
+            <Link  to='https://github.com/LuizHRF'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>Luiz Faccio</Text></Link>
+            <Link  to='https://github.com/marcobalestrin'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>Marco Antônio Balestrin</Text></Link>
+            <Link to='https://github.com/joaohenalves'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>João Henrique Alves dos Santos</Text></Link>
           </View>
       </Modal>
 
       <Ionicons name="information-circle-outline" size={40} color={Colors.light.icon} onPress={() => {setinfo(!info)}} />
 
 
-      <View style={{flexDirection: 'column'}}>  
+      <View style={{flexDirection: 'column', maxWidth: '70%'}}>  
         <Text style={estiloTexto.textMain}>Bem Vindo, {props.user}</Text>
         <Text style={estiloTexto.textSec}>{props.tela}</Text>
       </View>
@@ -100,7 +101,8 @@ const estiloTexto = StyleSheet.create({
     color: Colors.light.faintText, 
     fontSize: 20,
     fontFamily: 'MuseoModernoRegular',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    lineHeight: 27
   }
 }
   

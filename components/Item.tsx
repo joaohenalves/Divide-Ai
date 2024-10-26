@@ -90,13 +90,13 @@ export default function Item(props: any) {
 
                     {!props.desativada ? <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: 15}}>
 
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Ionicons name="add" size={18} color={"black"} style={{margin: 5}} onPress={() => setNovoparticipante(!novoParticipante)}/>
+                        <View style={{flexDirection: 'row', alignItems: 'center', width: '60%',}}>
+                            <Ionicons name="add" size={15} color={"black"} style={{margin: 5}} onPress={() => setNovoparticipante(!novoParticipante)}/>
                             <Text style={[styles.tableRowText, {fontSize: 11}]} onPress={() => setNovoparticipante(!novoParticipante)}>Inserir novo participante</Text>
                         </View>
 
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Ionicons name="trash-outline" size={18} color={"black"} style={{margin: 5}} onPress={() => removerItem()}/>
+                            <Ionicons name="trash-outline" size={17} color={"black"} style={{margin: 5}} onPress={() => removerItem()}/>
                             <Text style={[styles.tableRowText, {fontSize: 11}]} onPress={() => removerItem()}>Remover Item</Text>
                         </View>
 

@@ -8,7 +8,7 @@ import * as config from "../../config";
 import { Modal} from "react-native";
 import { StyleSheet } from "react-native";
 import CustomButton from "@/components/CustomButton";
-
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Index() {
 
@@ -53,7 +53,7 @@ export default function Index() {
   };
 
   return (
-    
+    <GestureHandlerRootView>
       <View
         style={{
           flex: 1,
@@ -67,69 +67,76 @@ export default function Index() {
           <Ionicons name="receipt" size={120} color={"white"}/>
         </View>
 
-        <View style={estiloOuter}> 
 
-        <View style={estiloInner}> 
+          <View style={estiloOuter}> 
 
-              <View style={{flexDirection:'column', width: "100%",}}>
-                <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoSemiBold', fontSize: 32, alignSelf: "center", marginBottom: 20 }}>Participar de uma comanda</Text>
-              </View>
-
-              <View style={{height: 1, width: '100%', backgroundColor: '#F3F3F3', marginVertical: 10}}></View>
-
-              <View style={{flexDirection:'column', width: "100%"}}>
-                <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', fontSize: 20, alignSelf: "flex-start",}}>ID da comanda:</Text>
-                <View style={{height: 1, width: '35%', backgroundColor: Colors.light.contrast_backgroud, alignSelf: "flex-start"}}></View>
-
-                <TextInput
-                      style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}
-                      placeholder="ID"
-                      placeholderTextColor={Colors.light.faintText}
-                      onChangeText={(value) => setIdComanda(value)}
-                      value={idComanda}
-                />         
-              </View>
-
-              <View style={{height: 1, width: '100%', backgroundColor: '#F3F3F3', marginVertical: 10}}></View>
-
-              <View style={{flexDirection:'column', width: "100%"}}>
-                <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', fontSize: 20, alignSelf: "flex-start",}}>Senha:</Text>
-                <View style={{height: 1, width: '16%', backgroundColor: Colors.light.contrast_backgroud, alignSelf: "flex-start"}}></View>
-
-                <TextInput
-                      style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}
-                      placeholder="Senha"
-                      placeholderTextColor={Colors.light.faintText}
-                      onChangeText={(value) => setSenha(value)}
-                      value={senha}
-                />         
-              </View>
-
-              
-          </View>    
-
+          
           <View style={estiloInner}> 
 
-            <View style={{height: 1, width: '100%', backgroundColor: '#F3F3F3'}}></View>
-            {error ? <Text style={{color: 'red', marginTop: 3}}>{error}</Text> : null}
-            <CustomButton style={styles} onPress={entrar_comanda} title="Entrar na comanda" />
+                <View style={{flexDirection:'column', width: "100%",}}>
+                  <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoSemiBold', fontSize: 32, alignSelf: "center", marginBottom: 20 }}>Participar de uma comanda</Text>
+                </View>
+
+                <View style={{height: 1, width: '100%', backgroundColor: '#F3F3F3', marginVertical: 10}}></View>
+
+                <View style={{flexDirection:'column', width: "100%"}}>
+                  <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', fontSize: 20, alignSelf: "flex-start",}}>ID da comanda:</Text>
+                  <View style={{height: 1, width: '35%', backgroundColor: Colors.light.contrast_backgroud, alignSelf: "flex-start"}}></View>
+
+                  <TextInput
+                        style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}
+                        placeholder="ID"
+                        placeholderTextColor={Colors.light.faintText}
+                        onChangeText={(value) => setIdComanda(value)}
+                        value={idComanda}
+                  />         
+                </View>
+
+                <View style={{height: 1, width: '100%', backgroundColor: '#F3F3F3', marginVertical: 10}}></View>
+
+                <View style={{flexDirection:'column', width: "100%"}}>
+                  <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', fontSize: 20, alignSelf: "flex-start",}}>Senha:</Text>
+                  <View style={{height: 1, width: '16%', backgroundColor: Colors.light.contrast_backgroud, alignSelf: "flex-start"}}></View>
+
+                  <TextInput
+                        style={{ height: 40, width: '100%', borderRadius: 20, padding: 15, marginTop: 10, backgroundColor: Colors.light.background}}
+                        placeholder="Senha"
+                        placeholderTextColor={Colors.light.faintText}
+                        onChangeText={(value) => setSenha(value)}
+                        value={senha}
+                  />         
+                </View>
+
+                
+            </View>    
+
+            <View style={estiloInner}> 
+
+              <View style={{height: 1, width: '100%', backgroundColor: '#F3F3F3'}}></View>
+              {error ? <Text style={{color: 'red', marginTop: 3}}>{error}</Text> : null}
+              <CustomButton style={styles} onPress={entrar_comanda} title="Entrar na comanda" />
 
 
+            </View>
+          
+
+            <Modal 
+                animationType="slide" 
+                transparent={true} 
+                visible={modalVisible} 
+                onRequestClose={() => {setModalVisible(!modalVisible);}}
+              >
+                <View style={{alignSelf: 'center', justifyContent: 'center', alignItems: 'center', width: "80%", height: 30, backgroundColor: '#D3D3D3', position: 'absolute', bottom: "20%", borderRadius: 10, zIndex: -1}}>
+                  <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', fontSize: 20}}>{modalMessage}</Text>
+                </View>
+              </Modal>
+          
           </View>
 
-          <Modal 
-              animationType="slide" 
-              transparent={true} 
-              visible={modalVisible} 
-              onRequestClose={() => {setModalVisible(!modalVisible);}}
-            >
-              <View style={{alignSelf: 'center', justifyContent: 'center', alignItems: 'center', width: "80%", height: 30, backgroundColor: '#D3D3D3', position: 'absolute', bottom: "20%", borderRadius: 10, zIndex: -1}}>
-                <Text style={{ color: Colors.light.text , fontFamily: 'MuseoModernoLight', fontSize: 20}}>{modalMessage}</Text>
-              </View>
-            </Modal>
-      </View>
+        
         
       </View>
+      </GestureHandlerRootView>
   );
 }
 

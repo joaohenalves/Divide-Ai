@@ -76,10 +76,10 @@ export default function NewItem(props: any) {
                 <View style={{flexDirection:'column', margin: 5}}>
 
                     <View style={styles.info}>
-                        <Text style={styles.text}>Nome do item</Text>
+                        <Text style={[styles.text, {flex: 0}]}>Nome do item</Text>
                        
                         <TextInput
-                            style={{ height: 30, borderRadius: 20, padding: 15, marginTop: 5, backgroundColor: Colors.light.background}}
+                            style={{ flex: 1, width: '100%', height: 30, borderRadius: 20, padding: 15, marginTop: 5, backgroundColor: Colors.light.background}}
                             placeholder="Nome"
                             placeholderTextColor={Colors.light.faintText}
                             onChangeText={(value) => setNome(value)}
@@ -87,11 +87,11 @@ export default function NewItem(props: any) {
                         />   
                     </View>   
 
-                    <View style={{margin: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                    <View style={{margin: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly'}}>
                         <Text style={[styles.text, { width: '60%' }]}>Valor:   R$</Text>
                         
                         <TextInput
-                            style={{width: '100%', height: 30, borderRadius: 20, padding: 15, backgroundColor: Colors.light.background}}
+                            style={{flex:1, width: '100%', height: 30, borderRadius: 20, padding: 15, backgroundColor: Colors.light.background}}
                             placeholder="Valor"
                             placeholderTextColor={Colors.light.faintText}
                             onChangeText={(value) => setValor(value)}
@@ -103,7 +103,7 @@ export default function NewItem(props: any) {
                         <Text style={[styles.text, {width: '50%'}]}>Quantidade:</Text>
                             
                             <TextInput
-                                style={{width: '100%', height: 30, borderRadius: 20, padding: 15, backgroundColor: Colors.light.background}}
+                                style={{flex: 1, width: '100%', height: 30, borderRadius: 20, padding: 15, backgroundColor: Colors.light.background}}
                                 placeholder="Quantidade"
                                 placeholderTextColor={Colors.light.faintText}
                                 onChangeText={(value) => setQuantidade(value)}
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginVertical: 6,
         borderRadius: 10,
-        width: '60%',
+        width: '75%',
         padding: 10,
     },
 
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginTop: 4,
         marginLeft: 5,
+        flex: 1,
     },
 
     info:{

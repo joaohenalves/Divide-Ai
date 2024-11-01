@@ -35,6 +35,7 @@ CREATE TABLE comanda (
 CREATE TABLE part_comanda (
     id_comanda INTEGER NOT NULL,
     id_usuario INTEGER NOT NULL,
+    total MONEY,
     CONSTRAINT fk_id_comanda FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda),
     CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
     CONSTRAINT pk_part_comanda PRIMARY KEY (id_comanda, id_usuario)
@@ -45,6 +46,7 @@ CREATE TABLE item (
     id_comanda INTEGER NOT NULL,
     nome_item VARCHAR NOT NULL,
     quantidade INTEGER NOT NULL,
+    quantidade_cada INTEGER,
     preco MONEY NOT NULL,
     CONSTRAINT fk_id_comanda FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda) ON DELETE CASCADE,
     CONSTRAINT pk_id_item PRIMARY KEY (id_item)

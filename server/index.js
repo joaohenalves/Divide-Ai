@@ -144,7 +144,7 @@ app.post("/cadastrarpartcomanda", async (req, res) => {
         if(comanda.senha_comanda == data.senha_comanda) {
             console.log("Inserindo na comanda o usuario", data.id_usuario);
             await db.none(
-                "INSERT INTO part_comanda (id_comanda, id_usuario) VALUES ($1, $2);",
+                "INSERT INTO part_comanda (id_comanda, id_usuario, total) VALUES ($1, $2, 0);",
                 [data.id_comanda, data.id_usuario]
             );
             res.sendStatus(201);
@@ -162,7 +162,7 @@ app.post("/cadastraritem", async (req, res) => {
     try {
         console.log("Inserindo na comanda o item", data.nome_item);
         await db.none(
-            "INSERT INTO item (id_comanda, nome_item, quantidade, preco) VALUES ($1, $2, $3, $4);",
+            "INSERT INTO item (id_comanda, nome_item, quantidade, preco,quantidade_cada) VALUES ($1, $2, $3, $4, 1);",
             [data.id_comanda, data.nome_item, data.quantidade, data.preco]
         );
         res.sendStatus(201);
@@ -251,6 +251,10 @@ app.post("/cadastrarpartitem", async (req, res) => {
             "INSERT INTO part_item (id_item, id_usuario) VALUES ($1, $2);",
             [data.id_item, data.id_usuario]
         );
+        await db.none(
+            "UPDATE item set quantidade_cada=quantidade_cada+1 WHERE id_item=$1;",
+            [data.id_item]
+        );
         res.sendStatus(201);
     } catch(error) {
         console.log(error);
@@ -306,7 +310,7 @@ app.get("/selecionaritenscomanda", async (req, res) => {
     try {
         const data = req.body;
         console.log(`Selecionando os itens da comanda ${data.id_comanda}`);
-        const result = await db.all(
+        const result = await db.any(
             "SELECT id_item, nome_item, quantidade, preco FROM item WHERE id_comanda = $1;",
             [data.id_comanda]
         );
@@ -321,12 +325,30 @@ app.get("/selecionarcomandasparticipadas", async (req, res) => {
     try {
         const data = req.body;
         console.log(`Selecionando as comandas em que o usuário ${data.id_usuario} participa`);
-        const result = await db.all(
+        const result = await db.any(
             "SELECT c.id_comanda, c.id_dono, c.nome_comanda, c.data_hora FROM comanda c JOIN part_comanda pc ON pc.id_comanda = c.id_comanda WHERE pc.id_usuario = $1;",
             [data.id_usuario]
         );
         res.status(200).json(result);
     } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+
+app.post("/calcularitenscomanda", async (req, res) => {
+    const data = req.body;
+    try {
+        
+        console.log(`Selecionando os itens da comanda ${data.id_comanda}`);
+        await db.none(
+            "UPDATE part_comanda SET total = (SELECT cast(sum(cast(preco as numeric)/quantidade_cada) as money) FROM part_item pi NATURAL JOIN item i WHERE i.id_comanda = $1 AND pi.id_usuario=$2) WHERE id_comanda=$1 AND id_usuario=$2;",
+            [data.id_comanda, data.id_usuario]
+        );
+        
+        res.sendStatus(200);
+    } catch (error) {
         console.log(error);
         res.sendStatus(400);
     }

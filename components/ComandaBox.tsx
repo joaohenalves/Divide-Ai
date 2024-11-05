@@ -4,6 +4,7 @@ import Comanda from './Comanda';
 import { ScrollView } from 'native-base';
 import { NativeBaseProvider } from 'native-base';
 import React from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const estilo: ViewStyle = {
 
@@ -40,6 +41,7 @@ export function ComandaBox(props: any) {
     
       <View style={estiloConteiner}>
         <NativeBaseProvider >
+          <GestureHandlerRootView>
           <ScrollView style={estilo} showsVerticalScrollIndicator={false} > 
             {validComandas.length === 0 ? (
               
@@ -49,11 +51,12 @@ export function ComandaBox(props: any) {
               </View>
 
             ) : props.comandas.map((comanda: any) => ( 
-                <Comanda key={comanda.id} comanda={comanda} active={props.active}/>
+                <Comanda key={comanda.id_comanda} comanda={comanda} active={props.active} triggerRefresh={props.triggerRefresh} ac={props.active}/>
               )
             )
             }
           </ScrollView>
+          </GestureHandlerRootView>
         </NativeBaseProvider>
       </View>
     

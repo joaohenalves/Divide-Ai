@@ -2,8 +2,10 @@ import { Colors } from '../constants/Colors';
 import { View, ViewStyle, Text } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
-
-import { Pressable, Modal} from "react-native";
+import { StyleSheet } from 'react-native';
+import { Modal} from "react-native";
+import { Link } from '@react-navigation/native';
+import * as Config from '../config';
 
 const estilo: ViewStyle = {
     flexDirection: "row",
@@ -37,6 +39,16 @@ const txt = "O aplicativo 'Divide Aí', desenvolvido para a disciplina de Planej
 
 export function Header( props : any) {
 
+  const router = props.router;
+  const currentUser = Config.currentUser;
+
+  const exit = () => {
+      // currentUser.id = -1;
+      // currentUser.name = 'null';
+      // currentUser.email = "null";
+      router.push({ pathname: '../login'});
+  }
+
   const [info, setinfo] = React.useState(false);
 
   return (
@@ -57,19 +69,41 @@ export function Header( props : any) {
           </View>  
             <Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>{txt}</Text>
             <Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>By:</Text>
-            <a style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }} href='https://github.com/LuizHRF'>Luiz Faccio</a>
-            <a style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }} href='https://github.com/joaohenalves'>João Henrique Alves dos Santos</a>
-            <a style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }} href='https://github.com/marcobalestrin'>Marco Antônio Balestrin</a>
+            <Link  to='https://github.com/LuizHRF'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>Luiz Faccio</Text></Link>
+            <Link  to='https://github.com/marcobalestrin'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>Marco Antônio Balestrin</Text></Link>
+            <Link to='https://github.com/joaohenalves'><Text style={{ color: Colors.light.text, fontSize: 15, fontFamily: 'MuseoModernoRegular' }}>João Henrique Alves dos Santos</Text></Link>
           </View>
       </Modal>
 
-      <View style={{flexDirection: 'column'}}>  
-        <Text style={{ color: Colors.light.text, fontSize: 24, fontFamily: 'MuseoModernoRegular' }}>Bem Vindo, {props.user}</Text>
-        <Text style={{ color: Colors.light.faintText, fontSize: 20, fontFamily: 'MuseoModernoRegular'}}>{props.tela}</Text>
-      </View>
-
       <Ionicons name="information-circle-outline" size={40} color={Colors.light.icon} onPress={() => {setinfo(!info)}} />
 
+
+      <View style={{flexDirection: 'column', maxWidth: '70%'}}>  
+        <Text style={estiloTexto.textMain}>Bem Vindo, {props.user}</Text>
+        <Text style={estiloTexto.textSec}>{props.tela}</Text>
+      </View>
+
+      <Ionicons name="exit-outline" size={40} color={Colors.light.icon} onPress={() => {exit}} />
+      
     </View>
   );
 }
+
+const estiloTexto = StyleSheet.create({
+  textMain: {
+    color: Colors.light.text, 
+    fontSize: 24,
+    fontFamily: 'MuseoModernoRegular',
+    alignSelf: 'center'
+  },
+
+  textSec: {
+    color: Colors.light.faintText, 
+    fontSize: 20,
+    fontFamily: 'MuseoModernoRegular',
+    alignSelf: 'center',
+    lineHeight: 27
+  }
+}
+  
+)

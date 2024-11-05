@@ -18,13 +18,13 @@ app.post("/cadastrarcomanda", async (req, res) => {
     const data = req.body;
     try {
         console.log("Inserindo no banco a comanda de", data.nome);
-        await db.none(
-            "INSERT INTO comanda (id_dono, data_hora, status_comanda, senha_comanda) VALUES ($1, CURRENT_TIMESTAMP, 1, $2);",
-            [data.id_dono, data.senha_comanda]
+        const idComanda = await db.one(
+            "INSERT INTO comanda (id_dono, nome_comanda, data_hora, status_comanda, senha_comanda) VALUES ($1, $2, CURRENT_TIMESTAMP, 1, $3) RETURNING id_comanda;",
+            [data.id_dono, data.titulo, data.senha_comanda]
         );
         await db.none(
             "INSERT INTO part_comanda (id_comanda, id_usuario) VALUES ($1, $2);",
-            [data.id_comanda, data.id_dono]
+            [idComanda.id_comanda, data.id_dono]
         );
         res.sendStatus(201);
     } catch(error) {
@@ -38,7 +38,7 @@ app.post("/cadastrarusuario", async (req, res) => {
     try {
         console.log("Inserindo no banco o usuario", data.email);
         await db.none(
-            "INSERT INTO usuario (nome_usuario, email, senha) VALUES ($1, $2, crypt($3, gen_salt('bf')), 1);",
+            "INSERT INTO usuario (nome_usuario, email, senha, status_usuario) VALUES ($1, $2, crypt($3, gen_salt('bf')), 1);",
             [data.nome_usuario, data.email, data.senha]
         );
         res.sendStatus(201);
@@ -80,10 +80,10 @@ app.post("/deletarusuario", async (req, res) => {
 
 app.put("/desativarcomanda", async (req, res) => {
     try {
-        const data = parseInt(req.body.id_comanda);
+        const data = req.body.id_comanda;
         console.log(`Mudando o status da comanda id ${data}`);
         await db.none(
-            "UPDATE comanda SET status_comanda = 0 WHERE id = $1;",
+            "UPDATE comanda SET status_comanda = 0 WHERE id_comanda = $1;",
             [data]
         );
         res.sendStatus(201);
@@ -121,12 +121,11 @@ app.put("/alterarcomanda", async (req, res) => {
 
 app.get("/selecionarcomandas", async (req, res) => {
     try {
-        const id_usuario = req.body.id_usuario;
+        const id_usuario = req.query.id_usuario;
         console.log(`Recuperando dados da(s) comanda(s) do dono ${id_usuario}`);
         const result = await db.any(
-            "SELECT * FROM comanda WHERE nome_dono = $1;",
-            [id_usuario]
-        );
+            "SELECT c.*, u.nome_usuario as nome_dono FROM comanda c JOIN usuario u ON c.id_dono= u.id_usuario WHERE id_dono = $1 UNION SELECT c.*, u.nome_usuario as nome_dono FROM comanda c JOIN usuario u ON c.id_dono=u.id_usuario WHERE id_comanda IN ( SELECT id_comanda FROM part_comanda WHERE id_usuario = $1);"
+        , [id_usuario]);
         res.status(200).json(result);
     } catch (error) {
         console.log(error);
@@ -165,6 +164,9 @@ app.post("/cadastraritem", async (req, res) => {
             "INSERT INTO item (id_comanda, nome_item, quantidade, preco,quantidade_cada) VALUES ($1, $2, $3, $4, 1);",
             [data.id_comanda, data.nome_item, data.quantidade, data.preco]
         );
+        await db.none(
+            "INSERT INTO part_item (id_item, id_usuario) VALUES ($1, $2);",
+            [idItem.id_item, data.id_usuario]);
         res.sendStatus(201);
     } catch(error) {
         console.log(error);
@@ -188,17 +190,17 @@ app.post("/atualizaritem", async (req, res) => {
                 "UPDATE item SET nome_item=$1, quantidade=$2, preco=$3 WHERE id_item=$4;",
                 [data.nome_item, data.quantidade, data.preco, data.id_item]
             );
-        
-    }res.sendStatus(200);
+        } res.sendStatus(200);
     } catch(error) {
         console.log(error);
         res.sendStatus(400);
     }
 });
-app.post("/deletaritem", async (req, res) => {
-    const data = req.body;
+
+app.delete("/deletaritem", async (req, res) => {
+    const data = req.query;
     try {
-        console.log("Deletando na comanda o item", data.nome_item);
+        console.log("Deletando na comanda o item", data.id_item);
         await db.none(
             "DELETE FROM item WHERE id_item=$1;",
             [data.id_item]
@@ -210,26 +212,28 @@ app.post("/deletaritem", async (req, res) => {
     }
 });
 
-app.get("/validarusuario", async (req, res) => {
+app.post("/validarusuario", async (req, res) => {
     try {
         const emailUsuario = req.body.email;
         const senhaUsuario = req.body.senha;
         //"SELECT CASE WHEN (SELECT count(id_usuario) FROM usuario WHERE email = $1 AND senha = crypt($2, senha)) >= 1 THEN 'TRUE' ELSE 'FALSE' END AS result;",
         console.log(`Recuperando dados do usuario ${emailUsuario}`);
-        const result = await db.any(
+        const result = await db.one(
             
-            "SELECT nome_usuario,email FROM usuario WHERE email = $1 AND senha = crypt($2, senha) AND status_usuario=1;",
+            "SELECT id_usuario, nome_usuario, email FROM usuario WHERE email = $1 AND senha = crypt($2, senha) AND status_usuario=1;",
 
             [emailUsuario,senhaUsuario]
         );
+        console.log(result);
         res.status(200).json(result);
     } catch (error) {
         console.log(error);
         res.sendStatus(400);
     }
 });
+
 app.delete("/removerpartitem", async (req, res) => {
-    const data = req.body;
+    const data = req.query;
     try {
         console.log(`Removendo a pessoa ${data.id_usuario} do item ${data.id_item}`);
         await db.none(
@@ -263,7 +267,7 @@ app.post("/cadastrarpartitem", async (req, res) => {
 });
 
 app.delete("/removerpartcomanda", async (req, res) => {
-    const data = req.body;
+    const data = req.query;
     try {
         console.log(`Removendo a pessoa ${data.id_usuario} da comanda ${data.id_comanda}`);
         await db.none(
@@ -276,11 +280,12 @@ app.delete("/removerpartcomanda", async (req, res) => {
         res.sendStatus(400);
     }
 });
+
 app.get("/selecionarparticipantescomanda", async (req, res) =>  {
     try {
-        const data = req.body;
+        const data = req.query;
         console.log(`Recuperando dados dos participantes da comanda ${data.id_comanda}`);
-        const result = await db.all(
+        const result = await db.any(
             "SELECT u.nome_usuario, u.id_usuario FROM usuario u JOIN part_comanda pc ON pc.id_usuario = u.id_usuario WHERE pc.id_comanda = $1;",
             [data.id_comanda]
         );
@@ -293,11 +298,11 @@ app.get("/selecionarparticipantescomanda", async (req, res) =>  {
 
 app.get("/selecionarparticipantesitem", async (req, res) =>  {
     try {
-        const data = req.body;
+        const data = req.query;
         console.log(`Recuperando dados dos participantes do item ${data.id_item} da comanda ${data.id_comanda}`);
-        const result = await db.all(
+        const result = await db.any(
             "SELECT u.id_usuario, u.nome_usuario FROM usuario u JOIN part_item pi ON pi.id_usuario = u.id_usuario WHERE pi.id_item = $1;",
-            [data.id_comanda]
+            [data.id_item]
         );
         res.status(200).json(result);
     } catch (error) {
@@ -308,8 +313,9 @@ app.get("/selecionarparticipantesitem", async (req, res) =>  {
 
 app.get("/selecionaritenscomanda", async (req, res) => {
     try {
-        const data = req.body;
+        const data = req.query;
         console.log(`Selecionando os itens da comanda ${data.id_comanda}`);
+        const result = await db.any(
         const result = await db.any(
             "SELECT id_item, nome_item, quantidade, preco FROM item WHERE id_comanda = $1;",
             [data.id_comanda]

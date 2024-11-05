@@ -1,7 +1,7 @@
 
 module.exports = {
-    port: 3001,
-    ip: "localhost:",
+    port: "3001",
+    ip: "192.168.0.102:",
     dbConfig: {
       user: 'postgres',
       host: 'localhost',
@@ -12,6 +12,8 @@ module.exports = {
     jwtSecret: 'mysecretkey',
 
     currentUser: {
-      name: 'none'
+      name: "null",
+      email: "null",
+      id: -1,
     }
   };

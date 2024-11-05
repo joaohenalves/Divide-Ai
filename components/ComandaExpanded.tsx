@@ -1,19 +1,24 @@
 import { Colors } from '../constants/Colors';
-import { View, ViewStyle, Text } from 'react-native';
+import { View, ViewStyle, Text, TouchableHighlightBase } from 'react-native';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import TabelaItens from './TabelaItens';
 import axios from 'axios';
 import * as config from '@/config';
 import { useFetchComandas } from '@/hooks/useFetchComandas';
+import { useFetchItens } from '@/hooks/useFetchItens';
 import { format, set } from 'date-fns';
 import { Modal} from "react-native";
-import { findFocusedRoute } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import Participante from './Participante';
+import { ScrollView } from 'native-base';
 
 export default function ComandaExpanded(props: any){
 
+    const desativada = !props.ac
     const comanda = props.comanda;
-    const { triggerRefresh } = useFetchComandas();
+
+    const {itens , triggerRefreshItens} = useFetchItens(comanda.id_comanda);
 
     const dataFormatada = format(new Date(comanda.data_hora), 'dd/MM/yyyy HH:mm');
 
@@ -23,7 +28,7 @@ export default function ComandaExpanded(props: any){
 
     const confirma: any = () => {
 
-        finalizar(nome, comanda.id);
+        finalizar(nome, comanda.id_comanda);
         setconfirmarModal(false);
         props.close(false);
     }
@@ -36,14 +41,13 @@ export default function ComandaExpanded(props: any){
 
       try {
 
-        const response = await axios.put('http://' + config.ip + config.port + "/alterarcomanda", {
-          id: id,
-          nome: user,
-          status: 0 
+        //console.log("ID: ", id);
+        const response = await axios.put('http://' + config.ip + config.port + "/desativarcomanda", {
+            id_comanda: id
         });
         comanda.status_comanda = 0;
-        console.log('Resposta do servidor:', response.data);
-        triggerRefresh();
+        
+        props.triggerRefresh();
 
         //showModalTemporarily('Comanda criada com sucesso!');
       } catch (e) {
@@ -54,72 +58,107 @@ export default function ComandaExpanded(props: any){
       }
     };
 
-    const compras = require("@/compar.json")
-
     return(
             <View style={estiloExpanded}> 
 
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', width: "100%"}}>
 
-                    <Text style={estiloExtra.titulo}>Comanda {comanda.id}</Text>
+                    <Text style={estiloExtra.titulo}>Comanda {comanda.id_comanda}</Text>
             
                     <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
 
                         <Ionicons name={"close"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10, zIndex: 100}} onPress={() => props.close(false)}/>
 
-                        <Ionicons name={"create"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10, zIndex: 100}} onPress={() => setAlter(!alter)}/>
+                        {//<Ionicons name={"create"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10, zIndex: 100}} onPress={() => setAlter(!alter)}/>
+                        }
 
-                        <Ionicons name={"trash"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirmar_finaliza()}/> 
-                                    
+                        {!desativada ? <Ionicons name={"trash"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirmar_finaliza()}/> 
+                         : null}           
                     </View>
 
                 </View>
                     
                 <Line />
-            
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={estiloExtra.campos}>Proprietário:</Text>
-                    <Text style={estiloExtra.texto}>{comanda.nome_dono}</Text>
-                </View>
-            
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={estiloExtra.campos}>Data de criação: </Text>
-                    <Text style={estiloExtra.texto}>{dataFormatada}</Text>
-                </View>
 
-                <Line />
+                <ScrollView showsVerticalScrollIndicator={false} style={{width: '100%'}}>
 
-                <View style={{width: "100%"}}>
-                    
-                    <TabelaItens itens={compras} />
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={estiloExtra.campos}>Título:</Text>
+                        <Text style={estiloExtra.texto}>{comanda.nome_comanda}</Text>
+                    </View>
 
-                </View>
+                    {comanda.senha_comanda ? 
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={estiloExtra.campos}>Senha:</Text>
+                            <Text style={estiloExtra.texto}>{comanda.senha_comanda}</Text>
+                        </View>
+                    : null}
+                
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={estiloExtra.campos}>Proprietário:</Text>
+                        <Text style={estiloExtra.texto}>{comanda.nome_dono}</Text>
+                    </View>
+                
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={estiloExtra.campos}>Data de criação: </Text>
+                        <Text style={estiloExtra.texto}>{dataFormatada}</Text>
+                    </View>
 
-                <Modal
-                    visible={confirmarModal}
-                    transparent={true}
-                >
-                    <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.8)", alignItems: 'center', justifyContent: "center"}}>
+                    <Line />
 
-                        <View style={{padding: 10, width: "70%", backgroundColor: 'white', borderRadius: 20, flexDirection: 'column', alignContent: "center", justifyContent: "center" }}>
+                    <View style={styles.tableHeader}>
+                        <Text style={[styles.tableHeaderText, {marginTop: 0}]}>Itens:</Text>
+                        
+                        <TabelaItens desativada={desativada} itens={itens} id_comanda={comanda.id_comanda} id_dono={comanda.id_dono} refreshItems={triggerRefreshItens}/>
+
+                    </View>
+
+                    <View style={styles.tableHeader}>
+                        <Text style={styles.tableHeaderText}>Participantes:</Text>
+
+                        <Participante id_comanda={comanda.id_comanda} desativada={desativada}/>
+                    </View>
                             
-                            <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}}>Tem certeza que deseja finalizar a comanda?</Text>
-                            
-                            <View style={{flexDirection: 'row', width: "100%"}}>
+                
+                    <Line />
+
+                {!desativada ? 
+                    <View style={styles.tableHeader}>
+                        <Text style={styles.tableHeaderText}>Valor Total:</Text>
+                    </View>
+                :   <View style={styles.tableHeader}>
+                        <Text style={styles.tableHeaderText}>Valor Final:</Text>
+                    </View>
+            }
+
+                    <Modal
+                        visible={confirmarModal}
+                        transparent={true}
+                        
+                    >
+                        <View style={{zIndex: -1, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.8)", alignItems: 'center', justifyContent: "center"}}>
+
+                            <View style={{padding: 10, width: "70%", backgroundColor: 'white', borderRadius: 20, flexDirection: 'column', alignContent: "center", justifyContent: "center" }}>
                                 
-                                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
-                                    <Ionicons name={"checkmark-sharp"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirma()}/>
-                                    <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}} onPress={() => confirma()}>Sim</Text>
-                                </View>
+                                <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}}>Tem certeza que deseja finalizar a comanda?</Text>
+                                
+                                <View style={{flexDirection: 'row', width: "100%"}}>
+                                    
+                                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                                        <Ionicons name={"checkmark-sharp"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => confirma()}/>
+                                        <Text style={{margin: 10, fontFamily: 'MuseoModernoSemiBold'}} onPress={() => confirma()}>Sim</Text>
+                                    </View>
 
-                                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
-                                    <Ionicons name={"close"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => setconfirmarModal(!confirmarModal)}/>
-                                    <Text style={{fontFamily: 'MuseoModernoSemiBold', margin: 10}} onPress={() => setconfirmarModal(!confirmarModal)}>Cancelar</Text>
+                                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                                        <Ionicons name={"close"} color={Colors.light.icon} size={30} style={{marginHorizontal: 10}} onPress={() => setconfirmarModal(!confirmarModal)}/>
+                                        <Text style={{fontFamily: 'MuseoModernoSemiBold', margin: 10}} onPress={() => setconfirmarModal(!confirmarModal)}>Cancelar</Text>
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
-                </Modal>
+                    </Modal>
+
+                </ScrollView>
 
             </View>
     )
@@ -178,7 +217,7 @@ const estiloExpanded: ViewStyle = {
     marginVertical: 5,
   
     width: '80%',
-    maxHeight: '90%',
+    maxHeight: '80%',
     flex: 1,
   
     padding: 15,
@@ -189,3 +228,23 @@ const estiloExpanded: ViewStyle = {
     opacity: 1,
     
 };
+
+const styles = StyleSheet.create({
+    tableContainer: {
+        flex: 1,
+        marginHorizontal: 5,
+    },
+    tableHeader: {
+
+        flexDirection: 'column',
+        alignContent: 'center',
+        width: "100%",
+
+    },
+    tableHeaderText: {
+        fontSize: 16,
+        textAlign: 'center',
+        fontFamily: 'MuseoModernoRegular',
+        marginVertical: 5,
+    },
+});

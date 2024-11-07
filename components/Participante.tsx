@@ -41,7 +41,7 @@ export default function Participante(props: any) {
 
                 
 
-                <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-evenly'}}>
+                <View key={participante.id_usuario} style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-evenly'}}>
                     
 
                     <View key={participante.id_usuario} style={styles.tableRow}>

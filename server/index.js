@@ -286,7 +286,7 @@ app.get("/selecionarparticipantescomanda", async (req, res) =>  {
         const data = req.query;
         console.log(`Recuperando dados dos participantes da comanda ${data.id_comanda}`);
         const result = await db.any(
-            " SELECT u.nome_usuario, u.id_usuario FROM usuario u NATURAL JOIN part_comanda pc WHERE pc.id_comanda = $1;",
+            "WITH cte_ AS (SELECT pc.id_usuario, COALESCE(SUM(vi.valorIndividual), '0') as valortotalpessoa FROM part_item pi JOIN valorIndividual vi ON vi.id_item = pi.id_item NATURAL RIGHT JOIN part_comanda pc WHERE pc.id_comanda = $1 GROUP BY pc.id_usuario) SELECT c.*, u.nome_usuario FROM cte_ c NATURAL JOIN usuario u ;",
             [data.id_comanda]
         );
         res.status(200).json(result);
@@ -366,7 +366,7 @@ app.get("/getValorTotal", async (req, res) => {
         console.log(`Selecionando valor total da comanda ${data.id_comanda}`);
 
         const result = await db.any(
-            "SELECT SUM(i.preco * i.quantidade) as total FROM item i WHERE i.id_comanda = $1;",
+            "SELECT COALESCE(SUM(i.preco * i.quantidade), '0') as total FROM item i WHERE i.id_comanda = $1;",
             [data.id_comanda]
         );
         res.status(200).json(result);
@@ -375,21 +375,3 @@ app.get("/getValorTotal", async (req, res) => {
         res.sendStatus(400);
     }
 });
-
-app.get("/getValorIndividual", async (req, res) => {
-    try {
-        const data = req.query;
-
-        console.log(`Selecionando valor individual do usuario ${data.id_usuario} na comanda ${data.id_comanda}`);
-
-        const result = await db.any(
-            "SELECT u.id_usuario, SUM(vi.valorIndividual) FROM usuario u NATURAL JOIN part_item pi NATURAL JOIN valorIndividual vi WHERE vi.id_comanda = $1 AND u.id_usuario = $2 group by u.id_usuario;",
-            [data.id_comanda, data.id_usuario]
-        );
-        res.status(200).json(result);
-    } catch(error) {
-        console.log(error);
-        res.sendStatus(400);
-    }
-});
-

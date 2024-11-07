@@ -1,7 +1,7 @@
 
 module.exports = {
     port: "3001",
-    ip: "192.168.0.102:",
+    ip: "localhost:",
     dbConfig: {
       user: 'postgres',
       host: 'localhost',

@@ -21,6 +21,7 @@ export default function TabelaItens(props: any) {
 
     const itensEmpty = props.itens.length === 0;
     const [newi, setNewi] = React.useState(false);
+    const maxH = props.desativada ? 180 : 220;
 
         return (
             <View style={styles.tableContainer}>
@@ -36,7 +37,7 @@ export default function TabelaItens(props: any) {
 
                     <View style={lineStyle}></View>
                     
-                    <ScrollView style={{maxHeight: 180, width: '100%'}} showsVerticalScrollIndicator={false}>
+                    <ScrollView style={{maxHeight: maxH, width: '100%'}} showsVerticalScrollIndicator={false}>
                         {props.itens.map((item: any, index: number) => (
                             
                             <Item desativada={props.desativada} key={index} item={item} id_comanda={props.id_comanda} refreshItems={props.refreshItems}/>

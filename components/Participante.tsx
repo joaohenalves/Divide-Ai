@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from "native-base";
 import { useFetchPartComanda } from '@/hooks/useFetchPartComanda';
+import { useFtechValorIndividual } from "@/hooks/useFetchValorIndividual";
 import axios from 'axios';
 import * as config from '@/config';
 
@@ -11,6 +12,7 @@ export default function Participante(props: any) {
 
     const {participantesComanda, triggerRefreshPartComanda} = useFetchPartComanda(parseInt(props.id_comanda));
     const participantes = participantesComanda;
+
 
     const RemoverParticipante = async (user : number) => {
 
@@ -37,10 +39,15 @@ export default function Participante(props: any) {
                         
             {participantes.map((participante: any, index: any) => (
 
+                
+
                 <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-evenly'}}>
+                    
+
                     <View key={participante.id_usuario} style={styles.tableRow}>
 
                         <Text style={styles.tableRowText}>{participante.nome_usuario}</Text>
+                        <Text style={styles.tableRowText}>{participante.valortotalpessoa}</Text>
                         <Text style={styles.tableRowText}>ID: {participante.id_usuario}</Text>
 
                     </View>

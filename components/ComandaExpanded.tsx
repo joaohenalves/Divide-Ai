@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import TabelaItens from './TabelaItens';
 import axios from 'axios';
 import * as config from '@/config';
-import { useFetchComandas } from '@/hooks/useFetchComandas';
+import { useFetchValorTotal } from '@/hooks/useFetchValorTotal';
 import { useFetchItens } from '@/hooks/useFetchItens';
 import { format, set } from 'date-fns';
 import { Modal} from "react-native";
@@ -14,6 +14,8 @@ import Participante from './Participante';
 import { ScrollView } from 'native-base';
 
 export default function ComandaExpanded(props: any){
+
+    const {valorTotal, triggerRefreshValorTotal} = useFetchValorTotal(props.comanda.id_comanda);
 
     const desativada = !props.ac
     const comanda = props.comanda;
@@ -124,10 +126,10 @@ export default function ComandaExpanded(props: any){
 
                 {!desativada ? 
                     <View style={styles.tableHeader}>
-                        <Text style={styles.tableHeaderText}>Valor Total:</Text>
+                        <Text style={styles.tableHeaderText}>Valor Total: {valorTotal}</Text>
                     </View>
                 :   <View style={styles.tableHeader}>
-                        <Text style={styles.tableHeaderText}>Valor Final:</Text>
+                        <Text style={styles.tableHeaderText}>Valor Final: {valorTotal}</Text>
                     </View>
             }
 

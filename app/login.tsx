@@ -2,6 +2,7 @@ import { Colors } from "@/constants/Colors";
 import { Text, View, Image, TextInput, StyleSheet } from "react-native";
 import * as config from "@/config";
 import React, { useState } from "react";
+import { useRouter } from "expo-router";
 import CustomButton from "@/components/CustomButton";
 import { saveSession } from "@/components/User"
 import axios from "axios";
@@ -31,8 +32,8 @@ function mask(password : string){
 }
 
 export default function Login(props: any) {
+  const router = useRouter();
 
-  const router = props.router
 
   const [senha, setSenha] = useState('');
   const [email, setEmail] = useState('');

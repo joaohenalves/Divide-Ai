@@ -160,13 +160,13 @@ app.post("/cadastraritem", async (req, res) => {
     const data = req.body;
     try {
         console.log("Inserindo na comanda o item", data.nome_item);
-        await db.none(
-            "INSERT INTO item (id_comanda, nome_item, quantidade, preco,quantidade_cada) VALUES ($1, $2, $3, $4, 1);",
+        const id_item = await db.one(
+            "INSERT INTO item (id_comanda, nome_item, quantidade, preco,quantidade_cada) VALUES ($1, $2, $3, $4, 1) RETURNING id_item;",
             [data.id_comanda, data.nome_item, data.quantidade, data.preco]
         );
         await db.none(
             "INSERT INTO part_item (id_item, id_usuario) VALUES ($1, $2);",
-            [idItem.id_item, data.id_usuario]);
+            [id_item.id_item, data.id_usuario]);
         res.sendStatus(201);
     } catch(error) {
         console.log(error);
@@ -286,7 +286,7 @@ app.get("/selecionarparticipantescomanda", async (req, res) =>  {
         const data = req.query;
         console.log(`Recuperando dados dos participantes da comanda ${data.id_comanda}`);
         const result = await db.any(
-            "SELECT u.nome_usuario, u.id_usuario FROM usuario u JOIN part_comanda pc ON pc.id_usuario = u.id_usuario WHERE pc.id_comanda = $1;",
+            " SELECT u.nome_usuario, u.id_usuario FROM usuario u NATURAL JOIN part_comanda pc WHERE pc.id_comanda = $1;",
             [data.id_comanda]
         );
         res.status(200).json(result);
@@ -299,7 +299,7 @@ app.get("/selecionarparticipantescomanda", async (req, res) =>  {
 app.get("/selecionarparticipantesitem", async (req, res) =>  {
     try {
         const data = req.query;
-        console.log(`Recuperando dados dos participantes do item ${data.id_item} da comanda ${data.id_comanda}`);
+        console.log(`Recuperando dados dos participantes do item ${data.id_item}`);
         const result = await db.any(
             "SELECT u.id_usuario, u.nome_usuario FROM usuario u JOIN part_item pi ON pi.id_usuario = u.id_usuario WHERE pi.id_item = $1;",
             [data.id_item]
@@ -315,7 +315,6 @@ app.get("/selecionaritenscomanda", async (req, res) => {
     try {
         const data = req.query;
         console.log(`Selecionando os itens da comanda ${data.id_comanda}`);
-        const result = await db.any(
         const result = await db.any(
             "SELECT id_item, nome_item, quantidade, preco FROM item WHERE id_comanda = $1;",
             [data.id_comanda]
@@ -359,3 +358,38 @@ app.post("/calcularitenscomanda", async (req, res) => {
         res.sendStatus(400);
     }
 });
+
+app.get("/getValorTotal", async (req, res) => {
+    try {
+        const data = req.query;
+
+        console.log(`Selecionando valor total da comanda ${data.id_comanda}`);
+
+        const result = await db.any(
+            "SELECT SUM(i.preco * i.quantidade) as total FROM item i WHERE i.id_comanda = $1;",
+            [data.id_comanda]
+        );
+        res.status(200).json(result);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.get("/getValorIndividual", async (req, res) => {
+    try {
+        const data = req.query;
+
+        console.log(`Selecionando valor individual do usuario ${data.id_usuario} na comanda ${data.id_comanda}`);
+
+        const result = await db.any(
+            "SELECT u.id_usuario, SUM(vi.valorIndividual) FROM usuario u NATURAL JOIN part_item pi NATURAL JOIN valorIndividual vi WHERE vi.id_comanda = $1 AND u.id_usuario = $2 group by u.id_usuario;",
+            [data.id_comanda, data.id_usuario]
+        );
+        res.status(200).json(result);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+

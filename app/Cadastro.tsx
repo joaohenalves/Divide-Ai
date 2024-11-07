@@ -4,7 +4,6 @@ import { useRouter } from "expo-router";
 import * as config from "@/config";
 import React, { useState } from "react";
 import CustomButton from "@/components/CustomButton";
-import { saveSession } from "@/components/User"
 import axios from "axios";
 import { set } from "date-fns";
 

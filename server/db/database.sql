@@ -59,3 +59,5 @@ CREATE TABLE part_item (
     CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     CONSTRAINT pk_part_item PRIMARY KEY (id_item, id_usuario)
 );
+
+CREATE VIEW valorIndividual AS SELECT i.*, ((i.preco * i.quantidade) / COUNT(pi.id_usuario)) as valorIndividual FROM item i NATURAL JOIN part_item pi GROUP BY i.id_item;

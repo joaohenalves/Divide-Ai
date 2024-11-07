@@ -89,6 +89,8 @@ export function NovaComandaBox() {
       console.log('Resposta do servidor:', response.data);
 
       showModalTemporarily('Comanda criada com sucesso!');
+      setTitulo('');
+      setSenha('');
     } catch (e) {
       
       setError(e instanceof Error ? e.message : String(e));

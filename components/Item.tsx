@@ -31,6 +31,7 @@ export default function Item(props: any) {
             });
             triggerRefreshPartItem();
             setNovoparticipante(!novoParticipante);
+            triggerRefreshPartComanda();
 
         } catch (e) {
             console.error('Erro ao fazer o cadastro de patrticipação no item:', e);
@@ -46,6 +47,7 @@ export default function Item(props: any) {
                 id_item: item.id_item}
                 });
             triggerRefreshPartItem();
+            triggerRefreshPartComanda();
 
         } catch (e) {
             console.error('Erro ao fazer a requisição:', e);
@@ -62,6 +64,7 @@ export default function Item(props: any) {
                 });
 
                 props.refreshItems();
+                triggerRefreshPartComanda();
     
             } catch (e) {
                 console.error('Erro ao fazer a requisição:', e);

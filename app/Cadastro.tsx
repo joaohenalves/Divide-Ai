@@ -107,7 +107,8 @@ export default function Cadastro() {
         placeholder="Escreva aqui"
         placeholderTextColor={Colors.light.faintText}
         onChangeText={(value) => setPassword(value)}
-        value={mask(password)}
+        value={password}
+        secureTextEntry
       />
 
       <CustomButton onPress={

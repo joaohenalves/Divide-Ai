@@ -4,7 +4,6 @@ import * as config from "@/config";
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import CustomButton from "@/components/CustomButton";
-import { saveSession } from "@/components/User"
 import axios from "axios";
 
 const styles = StyleSheet.create({
@@ -118,7 +117,8 @@ export default function Login(props: any) {
         placeholder="Escreva aqui"
         placeholderTextColor={Colors.light.faintText}
         onChangeText={(value) => setSenha(value)}
-        value={mask(senha)}
+        value={senha}
+        secureTextEntry
 
       />
       <View>

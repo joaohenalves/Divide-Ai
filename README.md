@@ -1,6 +1,6 @@
-# DivideAI — Shared Tabs & Bill Splitting
+# Divide Aí — Shared Tabs & Bill Splitting
 
-**DivideAI** is an application for managing shared tabs at restaurants, bars, and group gatherings. It allows users to track expenses, associate items with participants, and calculate how much each person owes.
+**Divide Aí** is an application for managing shared tabs at restaurants, bars, and group gatherings. It allows users to track expenses, associate items with participants, and calculate how much each person owes.
 
 Developed as an academic project in 2024.
 
@@ -22,17 +22,29 @@ Developed as an academic project in 2024.
 
 ## Screenshots
 
-| Login | Active Tabs |
-| --- | --- |
-| ![Login screen](screenshots/tela_login.png) | ![Active tabs](screenshots/lista_comandas.png) |
+### Login
 
-| Create a Tab | Join a Tab |
-| --- | --- |
-| ![Create a tab](screenshots/criar_comanda.png) | ![Join a tab](screenshots/participar.png) |
+![Login screen](screenshots/tela_login.png)
 
-| Tab Items and Totals | Item Participants |
-| --- | --- |
-| ![Tab details and items](screenshots/lista_itens.png) | ![Participants assigned to an item](screenshots/participantes_item.png) |
+### Active Tabs
+
+![Active tabs](screenshots/lista_comandas.png)
+
+### Tab Details and Items
+
+![Tab details and items](screenshots/lista_itens.png)
+
+### Item Participants
+
+![Participants assigned to an item](screenshots/participantes_item.png)
+
+### Create a Tab
+
+![Create a tab](screenshots/criar_comanda.png)
+
+### Join a Tab
+
+![Join a tab](screenshots/participar.png)
 
 ## Running Locally
 

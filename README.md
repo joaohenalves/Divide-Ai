@@ -4,6 +4,14 @@
 
 Developed as an academic project in 2024.
 
+## Contributors
+
+This project was developed collaboratively by:
+
+- **[João Henrique Alves](https://github.com/joaohenalves)**
+- **[Luiz Henrique Faccio](https://github.com/LuizHRF)**
+- **[Marco Antonio Balestrin](https://github.com/marcobalestin)**
+
 ## Features
 
 - User registration and login.
